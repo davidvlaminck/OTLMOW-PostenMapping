@@ -5,9 +5,11 @@ from otlmow_postenmapping.PostAssetFactory import PostAssetFactory
 
 
 class PostAssetFactoryTests(TestCase):
-    def set_up_factory(self):
+    @staticmethod
+    def set_up_factory():
         this_file = Path(__file__)
-        f = PostAssetFactory(this_file.parent / 'Postenmapping v1.0.0 RC3 Verkeersborden-gemapt.db')
+        f = PostAssetFactory(this_file.parent / 'Postenmapping v1.0.0 RC3 Verkeersborden-gemapt.db',
+                             directory=this_file.parent)
         return f
 
     def test_load_vkb_postenmapping(self):
@@ -161,20 +163,20 @@ class PostAssetFactoryTests(TestCase):
     def test_split_range_str(self):
         with self.subTest('x < 0.5'):
             expected_list = [('st', 0.5)]
-            self.assertListEqual(expected_list, PostAssetFactory.split_numeric_range_str('x < 0.5'))
+            self.assertListEqual(expected_list, PostAssetFactory._split_numeric_range_str('x < 0.5'))
 
         with self.subTest('x <= 0.5'):
             expected_list = [('ste', 0.5)]
-            self.assertListEqual(expected_list, PostAssetFactory.split_numeric_range_str('x <= 0.5'))
+            self.assertListEqual(expected_list, PostAssetFactory._split_numeric_range_str('x <= 0.5'))
 
         with self.subTest('0.5 < x'):
             expected_list = [('gt', 0.5)]
-            self.assertListEqual(expected_list, PostAssetFactory.split_numeric_range_str('0.5 < x'))
+            self.assertListEqual(expected_list, PostAssetFactory._split_numeric_range_str('0.5 < x'))
 
         with self.subTest('0.5 <= x'):
             expected_list = [('gte', 0.5)]
-            self.assertListEqual(expected_list, PostAssetFactory.split_numeric_range_str('0.5 <= x'))
+            self.assertListEqual(expected_list, PostAssetFactory._split_numeric_range_str('0.5 <= x'))
 
         with self.subTest('0.5 < x <= 1'):
             expected_list = [('gt', 0.5), ('ste', 1)]
-            self.assertListEqual(expected_list, PostAssetFactory.split_numeric_range_str('0.5 < x <= 1'))
+            self.assertListEqual(expected_list, PostAssetFactory._split_numeric_range_str('0.5 < x <= 1'))

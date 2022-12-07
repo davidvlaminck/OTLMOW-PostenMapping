@@ -1,3 +1,6 @@
+import json
+import pprint
+
 import os
 from pathlib import Path
 from typing import List
@@ -8,18 +11,19 @@ from otlmow_model.BaseClasses.FloatOrDecimalField import FloatOrDecimalField
 from otlmow_model.BaseClasses.KeuzelijstField import KeuzelijstField
 from otlmow_model.BaseClasses.OTLObject import OTLObject
 
+from otlmow_postenmapping.PostenMappingDict import PostenMappingDict
 from otlmow_postenmapping.SQLDbReader import SQLDbReader
 
 
 class PostAssetFactory:
-    def __init__(self, posten_mapping_path: Path = None):
-        if posten_mapping_path is None:
-            raise ValueError("can't init PostAssetFactory without a path to the file")
+    def __init__(self, posten_mapping_path: Path = None, directory: Path = None):
+        if posten_mapping_path is not None:
+            if not os.path.isfile(posten_mapping_path):
+                raise FileNotFoundError(f'{posten_mapping_path} is not a valid path. File does not exist.')
+            self.posten_mapping = self._write_and_return_posten_mapping(posten_mapping_path, directory=directory)
 
-        if not os.path.isfile(posten_mapping_path):
-            raise FileNotFoundError(f'{posten_mapping_path} is not a valid path. File does not exist.')
-
-        self.posten_mapping = self.load_postenmapping(posten_mapping_path)
+        if self.posten_mapping is None:
+            self.posten_mapping = PostenMappingDict.mapping_dict
 
     def create_assets_from_post(self, post: str) -> List[OTLObject]:
         mapping = self.posten_mapping[post]
@@ -40,21 +44,20 @@ class PostAssetFactory:
                     asset_atr = DotnotationHelper.get_attributes_by_dotnotation(asset, dotnotation=attr['dotnotation'],
                                                                                 waarde_shortcut_applicable=True)
                     field = asset_atr.field
-                    print(field)
                     if field == FloatOrDecimalField:
-                        asset_atr.field = self.create_extended_field_floatordecimal(field, attr['range'])
+                        asset_atr.field = self._create_extended_field_float_or_decimal(field, attr['range'])
                     elif issubclass(field, KeuzelijstField):
-                        asset_atr.field = self.create_extended_field_keuzelijst(field, attr['range'])
+                        asset_atr.field = self._create_extended_field_keuzelijst(field, attr['range'])
                     else:
                         raise NotImplementedError(f'Not implemented for {field}')
 
         return created_assets
 
-    def create_extended_field_floatordecimal(self, field, range_str: str):
+    def _create_extended_field_float_or_decimal(self, field, range_str: str):
         extended_field = type('Extended' + field.__name__, (field, object), field.__dict__.copy())
         extended_field.super_class = field
 
-        conditions = self.split_numeric_range_str(range_str)
+        conditions = self._split_numeric_range_str(range_str)
 
         def validate(value, attribuut, cls=extended_field):
             s = cls.super_class
@@ -101,8 +104,17 @@ class PostAssetFactory:
         return extended_field
 
     @staticmethod
-    def load_postenmapping(posten_mapping_path: Path):
+    def _write_and_return_posten_mapping(posten_mapping_path: Path, directory: Path = None):
         reader = SQLDbReader(posten_mapping_path)
+        version = reader.performReadQuery(
+            """SELECT waarde
+            FROM GeneralInfo
+            WHERE parameter = 'Version'""",
+            {})[0][0]
+
+        if PostenMappingDict.mapping_dict['version'] == version:
+            return PostenMappingDict.mapping_dict
+
         data = reader.performReadQuery(
             """SELECT standaardpostnummer, typeURI, attribuutURI, dotnotatie, dtAttriURI, defaultWaarde, bereik, 
             usageNote, isMeetstaatAttr, isAltijdInTeVullen, isBasisMapping, mappingStatus, mappingOpmerking 
@@ -110,7 +122,7 @@ class PostAssetFactory:
             WHERE isBasisMapping = '1'""",
             {})
 
-        mapping_dict = {}
+        mapping_dict = {'version': version}
         for row in data:
             mapping_nr = str(row[0])
             type_uri = str(row[1])
@@ -139,10 +151,12 @@ class PostAssetFactory:
                     'range': bereik_str
                 })
 
+        PostAssetFactory._write_posten_mapping(mapping_dict, directory)
+
         return mapping_dict
 
     @staticmethod
-    def split_numeric_range_str(range_str: str) -> []:
+    def _split_numeric_range_str(range_str: str) -> []:
         if range_str == '' or range_str is None or 'x' not in range_str:
             return []
 
@@ -167,7 +181,8 @@ class PostAssetFactory:
 
         return conditions
 
-    def create_extended_field_keuzelijst(self, field, range_str):
+    @staticmethod
+    def _create_extended_field_keuzelijst(field, range_str):
         extended_field = type('Extended' + field.__name__, (field, object), field.__dict__.copy())
         extended_field.super_class = field
         extended_field.options = {}
@@ -183,3 +198,13 @@ class PostAssetFactory:
             extended_field.options[option] = field_options[option]
 
         return extended_field
+
+    @staticmethod
+    def _write_posten_mapping(posten_mapping: dict, directory: Path = None):
+        posten_mapping_str = json.dumps(posten_mapping, indent=4)
+        file_dir = directory
+        if file_dir is None:
+            file_dir = Path(__file__).parent
+        file_path = file_dir / 'PostenMappingDict.py'
+        with open(file_path, "w") as file:
+            file.write('class PostenMappingDict:\n    mapping_dict = ' + posten_mapping_str.replace('null', 'None'))
