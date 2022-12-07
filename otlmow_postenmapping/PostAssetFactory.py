@@ -5,6 +5,7 @@ from typing import List
 from otlmow_converter.AssetFactory import AssetFactory
 from otlmow_converter.DotnotationHelper import DotnotationHelper
 from otlmow_model.BaseClasses.FloatOrDecimalField import FloatOrDecimalField
+from otlmow_model.BaseClasses.KeuzelijstField import KeuzelijstField
 from otlmow_model.BaseClasses.OTLObject import OTLObject
 
 from otlmow_postenmapping.SQLDbReader import SQLDbReader
@@ -39,15 +40,13 @@ class PostAssetFactory:
                     asset_atr = DotnotationHelper.get_attributes_by_dotnotation(asset, dotnotation=attr['dotnotation'],
                                                                                 waarde_shortcut_applicable=True)
                     field = asset_atr.field
-
+                    print(field)
                     if field == FloatOrDecimalField:
                         asset_atr.field = self.create_extended_field_floatordecimal(field, attr['range'])
+                    elif issubclass(field, KeuzelijstField):
+                        asset_atr.field = self.create_extended_field_keuzelijst(field, attr['range'])
                     else:
                         raise NotImplementedError(f'Not implemented for {field}')
-
-
-
-                    pass
 
         return created_assets
 
@@ -167,3 +166,20 @@ class PostAssetFactory:
                 conditions.append(('ste', float(splitted[2])))
 
         return conditions
+
+    def create_extended_field_keuzelijst(self, field, range_str):
+        extended_field = type('Extended' + field.__name__, (field, object), field.__dict__.copy())
+        extended_field.super_class = field
+        extended_field.options = {}
+
+        field_options = field.options
+
+        if '|' in range_str:
+            valid_options = range_str.split('|')
+        else:
+            valid_options = [range_str]
+
+        for option in valid_options:
+            extended_field.options[option] = field_options[option]
+
+        return extended_field

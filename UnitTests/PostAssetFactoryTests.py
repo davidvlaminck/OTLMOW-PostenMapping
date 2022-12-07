@@ -48,9 +48,9 @@ class PostAssetFactoryTests(TestCase):
 
         self.assertIsNotNone(bord)
 
-        with self.subTest('correct value, not raising ValueError'):
+        with self.subTest('correct value (x <= 0.5), not raising ValueError'):
             try:
-                bord.oppervlakte.waarde = 0.4
+                bord.oppervlakte.waarde = 0.5
                 self.assertTrue(True)
             except ValueError:
                 self.fail('ValueError raised')
@@ -58,6 +58,36 @@ class PostAssetFactoryTests(TestCase):
         with self.subTest('incorrect value, raising ValueError'):
             with self.assertRaises(ValueError):
                 bord.oppervlakte.waarde = 0.6
+
+    def test_create_assets_from_post_1001_20128(self):
+        factory = self.set_up_factory()
+        created_assets = factory.create_assets_from_post('1001.20128')
+
+        folie_count = sum(1 for a in created_assets if a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie')
+        bord_count = sum(1 for a in created_assets if a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord')
+        steun_count = sum(1 for a in created_assets if a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun')
+
+        self.assertEqual(1, folie_count)
+        self.assertEqual(1, bord_count)
+        self.assertEqual(0, steun_count)
+
+        bord = next((a for a in created_assets if a.typeURI ==
+                     'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord'), None)
+
+        self.assertIsNotNone(bord)
+
+        with self.subTest('correct value (0.5 < x <= 1), not raising ValueError'):
+            try:
+                bord.oppervlakte.waarde = 0.6
+                self.assertTrue(True)
+            except ValueError:
+                self.fail('ValueError raised')
+
+        with self.subTest('incorrect value, raising ValueError'):
+            with self.assertRaises(ValueError):
+                bord.oppervlakte.waarde = 0.2
+            with self.assertRaises(ValueError):
+                bord.oppervlakte.waarde = 1.6
 
     def test_create_assets_from_post_1001_20131(self):
         factory = self.set_up_factory()
@@ -106,7 +136,27 @@ class PostAssetFactoryTests(TestCase):
                      'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun'), None)
 
         self.assertIsNotNone(steun)
-        self.assertEqual(114.0, steun.diameter.waarde)
+        with self.subTest('correct value for float/decimal'):
+            self.assertEqual(114.0, steun.diameter.waarde)
+
+    def test_create_assets_from_post_1001_10171(self):
+        factory = self.set_up_factory()
+        created_assets = factory.create_assets_from_post('1001.10171')
+
+        folie_count = sum(1 for a in created_assets if a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie')
+        bord_count = sum(1 for a in created_assets if a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord')
+        steun_count = sum(1 for a in created_assets if a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun')
+
+        self.assertEqual(1, folie_count)
+        self.assertEqual(1, bord_count)
+        self.assertEqual(0, steun_count)
+
+        bord = next((a for a in created_assets if a.typeURI ==
+                     'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord'), None)
+
+        self.assertIsNotNone(bord)
+        with self.subTest('correct value for uniontype'):
+            self.assertEqual(400, bord.afmeting.achthoekig.zijde.waarde)
 
     def test_split_range_str(self):
         with self.subTest('x < 0.5'):
