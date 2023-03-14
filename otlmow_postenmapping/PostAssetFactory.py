@@ -3,7 +3,7 @@ import pprint
 
 import os
 from pathlib import Path
-from typing import List
+from typing import List, Dict
 
 from otlmow_converter.AssetFactory import AssetFactory
 from otlmow_converter.DotnotationHelper import DotnotationHelper
@@ -16,7 +16,7 @@ from otlmow_postenmapping.SQLDbReader import SQLDbReader
 
 
 class PostAssetFactory:
-    def __init__(self, posten_mapping_path: Path = None, directory: Path = None):
+    def __init__(self, posten_mapping_path: Path = None, directory: Path = None) -> None:
         if posten_mapping_path is not None:
             if not os.path.isfile(posten_mapping_path):
                 raise FileNotFoundError(f'{posten_mapping_path} is not a valid path. File does not exist.')
@@ -32,7 +32,7 @@ class PostAssetFactory:
             asset = AssetFactory.dynamic_create_instance_from_uri(type_uri)
             created_assets.append(asset)
 
-            for attr in mapping[type_uri]['attributen']:
+            for attr in mapping[type_uri]['attributen'].values():
                 if attr['value'] is not None:
                     value = attr['value']
                     if attr['type'] == 'http://www.w3.org/2001/XMLSchema#decimal':
@@ -53,7 +53,7 @@ class PostAssetFactory:
 
         return created_assets
 
-    def _create_extended_field_float_or_decimal(self, field, range_str: str):
+    def _create_extended_field_float_or_decimal(self, field, range_str: str) -> object:
         extended_field = type('Extended' + field.__name__, (field, object), field.__dict__.copy())
         extended_field.super_class = field
 
@@ -104,7 +104,7 @@ class PostAssetFactory:
         return extended_field
 
     @staticmethod
-    def _write_and_return_posten_mapping(posten_mapping_path: Path, directory: Path = None):
+    def _write_and_return_posten_mapping(posten_mapping_path: Path, directory: Path = None) -> Dict:
         reader = SQLDbReader(posten_mapping_path)
         version = reader.performReadQuery(
             """SELECT waarde
@@ -127,10 +127,10 @@ class PostAssetFactory:
             mapping_nr = str(row[0])
             type_uri = str(row[1])
             if mapping_nr not in mapping_dict:
-                mapping_dict[mapping_nr] = {type_uri: {'attributen': []}}
+                mapping_dict[mapping_nr] = {type_uri: {'attributen': {}}}
 
             if type_uri not in mapping_dict[mapping_nr]:
-                mapping_dict[mapping_nr][type_uri] = {'attributen': []}
+                mapping_dict[mapping_nr][type_uri] = {'attributen': {}}
 
             attr_uri = str(row[2])
             if attr_uri != 'None':
@@ -143,13 +143,13 @@ class PostAssetFactory:
                 if bereik_str == 'None':
                     bereik_str = None
 
-                mapping_dict[mapping_nr][type_uri]['attributen'].append({
+                mapping_dict[mapping_nr][type_uri]['attributen'][dotnot_str] = {
                     'typeURI': attr_uri,
                     'dotnotation': dotnot_str,
                     'type': type_str,
                     'value': waarde_str,
                     'range': bereik_str
-                })
+                }
 
         PostAssetFactory._write_posten_mapping(mapping_dict, directory)
 
@@ -182,7 +182,7 @@ class PostAssetFactory:
         return conditions
 
     @staticmethod
-    def _create_extended_field_keuzelijst(field, range_str):
+    def _create_extended_field_keuzelijst(field, range_str) -> object:
         extended_field = type('Extended' + field.__name__, (field, object), field.__dict__.copy())
         extended_field.super_class = field
         extended_field.options = {}
@@ -200,7 +200,7 @@ class PostAssetFactory:
         return extended_field
 
     @staticmethod
-    def _write_posten_mapping(posten_mapping: dict, directory: Path = None):
+    def _write_posten_mapping(posten_mapping: dict, directory: Path = None) -> None:
         posten_mapping_str = json.dumps(posten_mapping, indent=4)
         file_dir = directory
         if file_dir is None:
