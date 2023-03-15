@@ -31,4 +31,12 @@ pip install otlmow_postenmapping --upgrade
 ```
 
 ## Usage
-#TODO
+To create the Python dictionary holding all the mappings, initialize a PostAssetFactory, using the file path of the postenmapping and the directory where the dictionary needs to go.
+``` 
+from pathlib import Path
+from otlmow_postenmapping.PostAssetFactory import PostAssetFactory
+
+if __name__ == '__main__':
+    this_file = Path(__file__)
+    f = PostAssetFactory(this_file.parent / 'Postenmapping beschermbuis.db', directory=this_file.parent)
+``` 
