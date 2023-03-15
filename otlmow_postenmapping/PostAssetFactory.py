@@ -5,11 +5,11 @@ import os
 from pathlib import Path
 from typing import List, Dict
 
-from otlmow_converter.AssetFactory import AssetFactory
 from otlmow_converter.DotnotationHelper import DotnotationHelper
 from otlmow_model.BaseClasses.FloatOrDecimalField import FloatOrDecimalField
 from otlmow_model.BaseClasses.KeuzelijstField import KeuzelijstField
 from otlmow_model.BaseClasses.OTLObject import OTLObject
+from otlmow_model.Helpers.AssetCreator import dynamic_create_instance_from_uri
 
 from otlmow_postenmapping.PostenMappingDict import PostenMappingDict
 from otlmow_postenmapping.SQLDbReader import SQLDbReader
@@ -29,7 +29,7 @@ class PostAssetFactory:
         mapping = self.posten_mapping[post]
         created_assets = []
         for type_uri in mapping.keys():
-            asset = AssetFactory.dynamic_create_instance_from_uri(type_uri)
+            asset = dynamic_create_instance_from_uri(type_uri)
             created_assets.append(asset)
 
             for attr in mapping[type_uri]['attributen'].values():
