@@ -17,7 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Operating System :: OS Independent"
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.7"
 dependencies = [
   'otlmow_converter >= 0.9'
 ]
