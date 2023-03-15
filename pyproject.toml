@@ -10,11 +10,16 @@ readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Operating System :: OS Independent"
 ]
 requires-python = ">=3.8"
 dependencies = [
-  'otlmow_converter >= 0.6'
+  'otlmow_converter >= 0.9'
 ]
 
 [tool.setuptools.packages.find]
