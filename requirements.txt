@@ -1,1 +1,22 @@
-otlmow_converter >= 0.6
+attrs==22.2.0
+cachetools==5.3.0
+coverage==7.2.2
+et-xmlfile==1.1.0
+frozendict==2.3.5
+iniconfig==2.0.0
+isodate==0.6.1
+lxml==4.9.2
+openpyxl==3.1.2
+otlmow-converter==0.9
+otlmow-model==2.6.9
+packaging==23.0
+pluggy==1.0.0
+prettytable==3.6.0
+PyLD==2.0.3
+pyparsing==3.0.9
+pytest==7.2.2
+pytest-cov==4.0.0
+pytest-subtests==0.10.0
+rdflib==6.2.0
+six==1.16.0
+wcwidth==0.2.6

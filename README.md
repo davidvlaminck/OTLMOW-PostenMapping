@@ -19,7 +19,7 @@ It is split into different packages to reduce compatibility issues
 
 
 ## Installation and requirements
-Currently, you need at least Python version 3.8 to use this library.
+Currently, you need at least Python version 3.7 to use this library.
 
 To install the OTL MOW project into your Python project, use pip to install it:
 ``` 
