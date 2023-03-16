@@ -31,13 +31,13 @@ jobs:
         uses: tj-actions/verify-changed-files@v13
         id: verify-changed-files
         with:
-          files: coverage.svg
+          files: ./UnitTests/coverage.svg
       - name: Commit files
         if: steps.verify-changed-files.outputs.files_changed == 'true'
         run: |
           git pull
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add coverage.svg
+          git add ./UnitTests/coverage.svg
           git commit -m "Updated coverage.svg"
           git push
