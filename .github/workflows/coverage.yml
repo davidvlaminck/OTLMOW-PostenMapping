@@ -21,8 +21,8 @@ jobs:
         uses: py-actions/py-dependency-install@v4
         with:
           path: "requirements.txt"
-      - name: Run unittests with pytest
-        run: python run_all_tests.py
+      - name: Run unittests with pytest and coverage
+        run: python pytest -cov --cov-report=html
       - name: Coverage Badge.
         uses: tj-actions/coverage-badge-py@v2
         with:
