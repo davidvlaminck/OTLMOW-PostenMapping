@@ -25,7 +25,8 @@ jobs:
         run: python run_all_tests.py
       - name: Coverage Badge.
         uses: tj-actions/coverage-badge-py@v2
-        working-directory: .
+        with:
+          working-directory: .
       - name: Verify Changed files
         uses: tj-actions/verify-changed-files@v13
         id: verify-changed-files
