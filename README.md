@@ -4,7 +4,7 @@
 [![Unittests](https://github.com/davidvlaminck/OTLMOW-Postenmapping/actions/workflows/unittest.yml/badge.svg)](https://github.com/davidvlaminck/OTLMOW-PostenMapping/actions/workflows/unittest.yml)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/otlmow-postenmapping)
 [![GitHub issues](https://img.shields.io/github/issues/davidvlaminck/OTLMOW-PostenMapping)](https://github.com/davidvlaminck/OTLMOW-PostenMapping/issues)
-![coverage](https://github.com/davidvlaminck/OTLMOW-PostenMapping/blob/master/UnitTests/coverage.svg)
+[![coverage](https://github.com/davidvlaminck/OTLMOW-PostenMapping/blob/master/UnitTests/coverage.svg)](https://htmlpreview.github.io/?https://github.com/davidvlaminck/OTLMOW-PostenMapping/blob/master/UnitTests/htmlcov/index.html)
 
 ## Summary
 The main use case of otlmow-postenmapping is to translate the postenmapping artefact into Python dictionary for easy access and then using the dictionary to resolve a specific mapping into the corresponding assets
