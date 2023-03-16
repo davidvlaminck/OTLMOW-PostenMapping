@@ -24,8 +24,8 @@ jobs:
       - name: Run unittests with pytest
         run: python run_all_tests.py
       - name: Coverage Badge.
-        run: python "pass"
-          working-directory: ./UnitTests
+        run:
+          working-directory: .
         uses: tj-actions/coverage-badge-py@v2
       - name: Verify Changed files
         uses: tj-actions/verify-changed-files@v13
