@@ -32,12 +32,15 @@ jobs:
         id: verify-changed-files
         with:
           files: ./UnitTests/coverage.svg
+      - name: Remove .gitignore from htmlcov
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        run: rm -f ./htmlcov/.gitignore
       - name: Commit files
         if: steps.verify-changed-files.outputs.files_changed == 'true'
         run: |
           git pull
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add ./coverage.svg
+          git add .
           git commit -m "Updated coverage.svg"
           git push
