@@ -3,9 +3,12 @@ run-name: Coverage for ${{ github.sha }}
 on: [push]
 
 jobs:
-  tests:
+  coverage:
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.11
@@ -19,19 +22,15 @@ jobs:
         with:
           path: "requirements.txt"
       - name: Run unittests with pytest
-        working-directory: ./UnitTests
         run: python run_all_tests.py
       - name: Coverage Badge
-        working-directory: ./UnitTests
         uses: tj-actions/coverage-badge-py@v2
       - name: Verify Changed files
-        working-directory: ./UnitTests
         uses: tj-actions/verify-changed-files@v13
         id: verify-changed-files
         with:
           files: coverage.svg
       - name: Commit files
-        working-directory: ./UnitTests
         if: steps.verify-changed-files.outputs.files_changed == 'true'
         run: |
           git pull
