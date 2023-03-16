@@ -36,10 +36,3 @@ jobs:
           git add coverage.svg
           git commit -m "Updated coverage.svg"
           git push
-          
-          git pull
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add coverage.svg
-          git commit -m "Updated coverage.svg"
-          git push
