@@ -1,5 +1,5 @@
-name: Unittests
-run-name: Unittests for ${{ github.sha }}
+name: Coverage
+run-name: Coverage for ${{ github.sha }}
 on: [push]
 
 jobs:
@@ -7,9 +7,8 @@ jobs:
     timeout-minutes: 10
     runs-on: ${{ matrix.os }}
     strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+      os: ubuntu-latest
+      python-version: '3.11'
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -24,3 +23,5 @@ jobs:
           path: "requirements.txt"
       - name: Run unittests with pytest
         run: python UnitTests/run_all_tests.py
+      - name: Coverage Badge
+        uses: tj-actions/coverage-badge-py@v2
