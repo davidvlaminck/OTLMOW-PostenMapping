@@ -23,4 +23,5 @@ jobs:
         with:
           path: "requirements.txt"
       - name: Run unittests with pytest
-        run: python UnitTests/run_all_tests.py
+        run: python -m pytest -v
+        working-directory: ./UnitTests
