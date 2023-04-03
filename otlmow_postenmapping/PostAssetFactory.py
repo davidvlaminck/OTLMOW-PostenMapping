@@ -25,6 +25,35 @@ class PostAssetFactory:
         if self.posten_mapping is None:
             self.posten_mapping = PostenMappingDict.mapping_dict
 
+    def create_assets_from_type_template(self, template_key: str, base_asset: OTLObject) -> List[OTLObject]:
+        mapping = self.posten_mapping[template_key]
+        created_assets = [base_asset]
+        for asset_to_create in mapping.keys():
+            type_uri = mapping[asset_to_create]['typeURI']
+            asset = dynamic_create_instance_from_uri(class_uri=type_uri, directory=None)
+            created_assets.append(asset)
+
+            for attr in mapping[asset_to_create]['attributen'].values():
+                if attr['value'] is not None:
+                    value = attr['value']
+                    if attr['type'] == 'http://www.w3.org/2001/XMLSchema#decimal':
+                        value = float(attr['value'])
+
+                    DotnotationHelper.set_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'],
+                                                                   waarde_shortcut_applicable=True, value=value)
+                elif attr['range'] is not None:
+                    asset_atr = DotnotationHelper.get_attributes_by_dotnotation(asset, dotnotation=attr['dotnotation'],
+                                                                                waarde_shortcut_applicable=True)
+                    field = asset_atr.field
+                    if field == FloatOrDecimalField:
+                        asset_atr.field = self._create_extended_field_float_or_decimal(field, attr['range'])
+                    elif issubclass(field, KeuzelijstField):
+                        asset_atr.field = self._create_extended_field_keuzelijst(field, attr['range'])
+                    else:
+                        raise NotImplementedError(f'Not implemented for {field}')
+
+        return created_assets
+
     def create_assets_from_post(self, post: str) -> List[OTLObject]:
         mapping = self.posten_mapping[post]
         created_assets = []
@@ -117,7 +146,7 @@ class PostAssetFactory:
 
         data = reader.performReadQuery(
             """SELECT standaardpostnummer, typeURI, attribuutURI, dotnotatie, dtAttriURI, defaultWaarde, bereik, 
-            usageNote, isMeetstaatAttr, isAltijdInTeVullen, isBasisMapping, mappingStatus, mappingOpmerking 
+            usageNote, isMeetstaatAttr, isAltijdInTeVullen, isBasisMapping, mappingStatus, mappingOpmerking, TempID 
             FROM MappingSB250
             WHERE isBasisMapping = '1'""",
             {})
@@ -125,12 +154,13 @@ class PostAssetFactory:
         mapping_dict = {'version': version}
         for row in data:
             mapping_nr = str(row[0])
+            temp_id = str(row[13])
             type_uri = str(row[1])
             if mapping_nr not in mapping_dict:
-                mapping_dict[mapping_nr] = {type_uri: {'attributen': {}}}
+                mapping_dict[mapping_nr] = {}
 
-            if type_uri not in mapping_dict[mapping_nr]:
-                mapping_dict[mapping_nr][type_uri] = {'attributen': {}}
+            if temp_id not in mapping_dict[mapping_nr]:
+                mapping_dict[mapping_nr][temp_id] = {'typeURI': type_uri, 'attributen': {}}
 
             attr_uri = str(row[2])
             if attr_uri != 'None':
@@ -143,7 +173,7 @@ class PostAssetFactory:
                 if bereik_str == 'None':
                     bereik_str = None
 
-                mapping_dict[mapping_nr][type_uri]['attributen'][dotnot_str] = {
+                mapping_dict[mapping_nr][temp_id]['attributen'][dotnot_str] = {
                     'typeURI': attr_uri,
                     'dotnotation': dotnot_str,
                     'type': type_str,
