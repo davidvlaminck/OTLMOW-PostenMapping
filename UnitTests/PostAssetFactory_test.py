@@ -18,12 +18,14 @@ def test_load_vkb_postenmapping():
     assert '1001.30704' in mapping
     assert '1001.20111' in mapping
 
-    assert 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun' in mapping['1001.30704']
-    assert 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord' \
-           in mapping['1001.20111']
+    assert mapping['1001.30704']['1'][
+               'typeURI'] == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun'
+    assert mapping['1001.20111']['2'][
+               'typeURI'] == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord'
 
     assert mapping['1001.30704'] == {
-        'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun': {
+        '1': {
+            'typeURI': 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun',
             'attributen':
                 {'diameter': {
                     'typeURI': 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun.diameter',
@@ -163,7 +165,7 @@ def test_create_assets_from_post_1001_10171(subtests):
     assert steun_count == 0
 
     bord = next((a for a in created_assets if a.typeURI ==
-                  'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord'), None)
+                 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord'), None)
 
     assert bord is not None
 

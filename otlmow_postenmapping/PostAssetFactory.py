@@ -28,9 +28,13 @@ class PostAssetFactory:
     def create_assets_from_type_template(self, template_key: str, base_asset: OTLObject) -> List[OTLObject]:
         mapping = self.posten_mapping[template_key]
         created_assets = [base_asset]
+
+        # TODO
+        # edit the base_asset instead of creating a new one
+
         for asset_to_create in mapping.keys():
             type_uri = mapping[asset_to_create]['typeURI']
-            asset = dynamic_create_instance_from_uri(class_uri=type_uri, directory=None)
+            asset = dynamic_create_instance_from_uri(class_uri=type_uri)
             created_assets.append(asset)
 
             for attr in mapping[asset_to_create]['attributen'].values():
@@ -57,11 +61,12 @@ class PostAssetFactory:
     def create_assets_from_post(self, post: str) -> List[OTLObject]:
         mapping = self.posten_mapping[post]
         created_assets = []
-        for type_uri in mapping.keys():
-            asset = dynamic_create_instance_from_uri(type_uri)
+        for asset_to_create in mapping.keys():
+            type_uri = mapping[asset_to_create]['typeURI']
+            asset = dynamic_create_instance_from_uri(class_uri=type_uri)
             created_assets.append(asset)
 
-            for attr in mapping[type_uri]['attributen'].values():
+            for attr in mapping[asset_to_create]['attributen'].values():
                 if attr['value'] is not None:
                     value = attr['value']
                     if attr['type'] == 'http://www.w3.org/2001/XMLSchema#decimal':
