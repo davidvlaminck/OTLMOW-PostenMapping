@@ -12,9 +12,14 @@ def set_up_factory():
     return f
 
 
+def test_load_factory_with_default_mapping():
+    factory = PostAssetFactory()
+    assert factory.mapping_dict is not None
+
+
 def test_load_vkb_postenmapping():
     factory = set_up_factory()
-    mapping = factory.posten_mapping
+    mapping = factory.mapping_dict
     assert '1001.30704' in mapping
     assert '1001.20111' in mapping
 
@@ -32,7 +37,8 @@ def test_load_vkb_postenmapping():
                     'dotnotation': 'diameter',
                     'type': 'http://www.w3.org/2001/XMLSchema#decimal',
                     'value': '114',
-                    'range': None}}}
+                    'range': None}},
+            'isHoofdAsset': False}
     }
 
 

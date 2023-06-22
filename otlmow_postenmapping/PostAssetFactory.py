@@ -1,3 +1,4 @@
+import importlib
 import json
 import pprint
 
@@ -11,26 +12,34 @@ from otlmow_model.BaseClasses.KeuzelijstField import KeuzelijstField
 from otlmow_model.BaseClasses.OTLObject import OTLObject
 from otlmow_model.Helpers.AssetCreator import dynamic_create_instance_from_uri
 
-from otlmow_postenmapping.PostenMappingDict import PostenMappingDict
 from otlmow_postenmapping.SQLDbReader import SQLDbReader
 
 
 class PostAssetFactory:
-    def __init__(self, posten_mapping_path: Path = None, directory: Path = None) -> None:
+    def __init__(self, posten_mapping_path: Path = None, directory: Path = None, mapping_name: str = 'PostenMapping') -> None:
+        self.mapping_dict = None
         if posten_mapping_path is not None:
             if not os.path.isfile(posten_mapping_path):
                 raise FileNotFoundError(f'{posten_mapping_path} is not a valid path. File does not exist.')
-            self.posten_mapping = self._write_and_return_posten_mapping(posten_mapping_path, directory=directory)
+            self.mapping_dict = self._write_and_return_mapping_dict(posten_mapping_path, directory=directory,
+                                                                    mapping_name=mapping_name)
 
-        if self.posten_mapping is None:
-            self.posten_mapping = PostenMappingDict.mapping_dict
+        if self.mapping_dict is None:
+            self.mapping_dict = self.import_mapping_dict(directory=directory, mapping_name=mapping_name)
+
+    @staticmethod
+    def import_mapping_dict(directory: Path, mapping_name: str):
+        class_name = f'{mapping_name}Dict'
+        import_str = class_name
+        if directory is not None:
+            import_str = f'{directory}.{import_str}'
+        py_mod = importlib.import_module(import_str)
+        class_ = getattr(py_mod, class_name)
+        return class_().mapping_dict
 
     def create_assets_from_type_template(self, template_key: str, base_asset: OTLObject) -> List[OTLObject]:
-        mapping = self.posten_mapping[template_key]
+        mapping = self.mapping_dict[template_key]
         created_assets = [base_asset]
-
-        # TODO
-        # edit the base_asset instead of creating a new one
 
         for asset_to_create in mapping.keys():
             type_uri = mapping[asset_to_create]['typeURI']
@@ -59,7 +68,7 @@ class PostAssetFactory:
         return created_assets
 
     def create_assets_from_post(self, post: str) -> List[OTLObject]:
-        mapping = self.posten_mapping[post]
+        mapping = self.mapping_dict[post]
         created_assets = []
         for asset_to_create in mapping.keys():
             type_uri = mapping[asset_to_create]['typeURI']
@@ -138,7 +147,7 @@ class PostAssetFactory:
         return extended_field
 
     @staticmethod
-    def _write_and_return_posten_mapping(posten_mapping_path: Path, directory: Path = None) -> Dict:
+    def _write_and_return_mapping_dict(posten_mapping_path: Path, mapping_name: str, directory: Path = None) -> Dict:
         reader = SQLDbReader(posten_mapping_path)
         version = reader.performReadQuery(
             """SELECT waarde
@@ -146,12 +155,10 @@ class PostAssetFactory:
             WHERE parameter = 'Version'""",
             {})[0][0]
 
-        if PostenMappingDict.mapping_dict['version'] == version:
-            return PostenMappingDict.mapping_dict
-
         data = reader.performReadQuery(
             """SELECT standaardpostnummer, typeURI, attribuutURI, dotnotatie, dtAttriURI, defaultWaarde, bereik, 
-            usageNote, isMeetstaatAttr, isAltijdInTeVullen, isBasisMapping, mappingStatus, mappingOpmerking, TempID 
+                usageNote, isMeetstaatAttr, isAltijdInTeVullen, isBasisMapping, mappingStatus, mappingOpmerking, TempID, 
+                isHoofdAsset 
             FROM MappingSB250
             WHERE isBasisMapping = '1'""",
             {})
@@ -166,6 +173,8 @@ class PostAssetFactory:
 
             if temp_id not in mapping_dict[mapping_nr]:
                 mapping_dict[mapping_nr][temp_id] = {'typeURI': type_uri, 'attributen': {}}
+
+            mapping_dict[mapping_nr][temp_id]['isHoofdAsset'] = (row[14] == 'true')
 
             attr_uri = str(row[2])
             if attr_uri != 'None':
@@ -186,7 +195,8 @@ class PostAssetFactory:
                     'range': bereik_str
                 }
 
-        PostAssetFactory._write_posten_mapping(mapping_dict, directory)
+        PostAssetFactory._write_posten_mapping(mapping_dict=mapping_dict, directory=directory,
+                                               mapping_name=mapping_name)
 
         return mapping_dict
 
@@ -235,11 +245,13 @@ class PostAssetFactory:
         return extended_field
 
     @staticmethod
-    def _write_posten_mapping(posten_mapping: dict, directory: Path = None) -> None:
-        posten_mapping_str = json.dumps(posten_mapping, indent=4)
+    def _write_posten_mapping(mapping_dict: dict, mapping_name: str, directory: Path = None) -> None:
+        posten_mapping_str = json.dumps(mapping_dict, indent=4)
         file_dir = directory
         if file_dir is None:
             file_dir = Path(__file__).parent
-        file_path = file_dir / 'PostenMappingDict.py'
+        file_path = file_dir / f'{mapping_name}Dict.py'
         with open(file_path, "w") as file:
-            file.write('class PostenMappingDict:\n    mapping_dict = ' + posten_mapping_str.replace('null', 'None'))
+            file.write(f'class {mapping_name}Dict:\n    mapping_dict = ' + posten_mapping_str.replace('null', 'None').
+                       replace('true', 'True').replace('false', 'False'))
+

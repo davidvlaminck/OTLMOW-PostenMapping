@@ -40,7 +40,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10112": {
@@ -82,7 +83,8 @@ class PostenMappingDict:
                     "value": "zonder-tekst.-symbool-of-overlay",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10113": {
@@ -124,7 +126,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10114": {
@@ -166,7 +169,8 @@ class PostenMappingDict:
                     "value": "zonder-tekst.-symbool-of-overlay",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10115": {
@@ -208,7 +212,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10116": {
@@ -250,7 +255,8 @@ class PostenMappingDict:
                     "value": "zonder-tekst.-symbool-of-overlay",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10117": {
@@ -292,7 +298,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10118": {
@@ -334,7 +341,8 @@ class PostenMappingDict:
                     "value": "zonder-tekst.-symbool-of-overlay",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10119": {
@@ -376,7 +384,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10120": {
@@ -418,7 +427,8 @@ class PostenMappingDict:
                     "value": "zonder-tekst.-symbool-of-overlay",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10121": {
@@ -460,7 +470,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10122": {
@@ -502,7 +513,8 @@ class PostenMappingDict:
                     "value": "zonder-tekst.-symbool-of-overlay",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10123": {
@@ -544,7 +556,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10124": {
@@ -586,7 +599,8 @@ class PostenMappingDict:
                     "value": "zonder-tekst.-symbool-of-overlay",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10125": {
@@ -628,7 +642,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10126": {
@@ -670,7 +685,8 @@ class PostenMappingDict:
                     "value": "zonder-tekst.-symbool-of-overlay",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10127": {
@@ -712,7 +728,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10128": {
@@ -754,7 +771,8 @@ class PostenMappingDict:
                     "value": "zonder-tekst.-symbool-of-overlay",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10131": {
@@ -775,7 +793,8 @@ class PostenMappingDict:
                     "value": "400",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10132": {
@@ -796,7 +815,8 @@ class PostenMappingDict:
                     "value": "400",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10133": {
@@ -817,7 +837,8 @@ class PostenMappingDict:
                     "value": "400",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10135": {
@@ -838,7 +859,8 @@ class PostenMappingDict:
                     "value": "700",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10136": {
@@ -859,7 +881,8 @@ class PostenMappingDict:
                     "value": "700",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10141": {
@@ -880,7 +903,8 @@ class PostenMappingDict:
                     "value": "900",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10142": {
@@ -901,7 +925,8 @@ class PostenMappingDict:
                     "value": "900",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10143": {
@@ -922,7 +947,8 @@ class PostenMappingDict:
                     "value": "900",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10145": {
@@ -943,7 +969,8 @@ class PostenMappingDict:
                     "value": "1100",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10146": {
@@ -964,7 +991,8 @@ class PostenMappingDict:
                     "value": "1100",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10147": {
@@ -985,7 +1013,8 @@ class PostenMappingDict:
                     "value": "1100",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10151": {
@@ -1006,7 +1035,8 @@ class PostenMappingDict:
                     "value": "400",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10152": {
@@ -1027,7 +1057,8 @@ class PostenMappingDict:
                     "value": "400",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10153": {
@@ -1048,7 +1079,8 @@ class PostenMappingDict:
                     "value": "400",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10155": {
@@ -1069,7 +1101,8 @@ class PostenMappingDict:
                     "value": "700",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10156": {
@@ -1090,7 +1123,8 @@ class PostenMappingDict:
                     "value": "700",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10157": {
@@ -1111,7 +1145,8 @@ class PostenMappingDict:
                     "value": "700",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10161": {
@@ -1132,7 +1167,8 @@ class PostenMappingDict:
                     "value": "900",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10162": {
@@ -1153,7 +1189,8 @@ class PostenMappingDict:
                     "value": "900",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10163": {
@@ -1174,7 +1211,8 @@ class PostenMappingDict:
                     "value": "900",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10165": {
@@ -1195,7 +1233,8 @@ class PostenMappingDict:
                     "value": "1100",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10171": {
@@ -1209,7 +1248,8 @@ class PostenMappingDict:
                     "value": "folietype-1",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         },
         "2": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord",
@@ -1221,7 +1261,8 @@ class PostenMappingDict:
                     "value": "400",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10172": {
@@ -1242,7 +1283,8 @@ class PostenMappingDict:
                     "value": "400",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10175": {
@@ -1263,7 +1305,8 @@ class PostenMappingDict:
                     "value": "700",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10176": {
@@ -1284,7 +1327,8 @@ class PostenMappingDict:
                     "value": "700",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10181": {
@@ -1305,7 +1349,8 @@ class PostenMappingDict:
                     "value": "900",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10182": {
@@ -1326,7 +1371,8 @@ class PostenMappingDict:
                     "value": "900",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10183": {
@@ -1347,7 +1393,8 @@ class PostenMappingDict:
                     "value": "900",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10185": {
@@ -1375,7 +1422,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10186": {
@@ -1403,7 +1451,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10187": {
@@ -1431,7 +1480,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10188": {
@@ -1459,7 +1509,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10189": {
@@ -1480,7 +1531,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10190": {
@@ -1508,7 +1560,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10191": {
@@ -1536,7 +1589,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10192": {
@@ -1557,7 +1611,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10193": {
@@ -1578,7 +1633,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10211": {
@@ -1613,7 +1669,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10212": {
@@ -1648,7 +1705,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10221": {
@@ -1683,7 +1741,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10222": {
@@ -1718,7 +1777,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10231": {
@@ -1753,7 +1813,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10232": {
@@ -1788,7 +1849,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10311": {
@@ -1823,7 +1885,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10312": {
@@ -1858,7 +1921,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10321": {
@@ -1893,7 +1957,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10322": {
@@ -1928,7 +1993,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10331": {
@@ -1963,7 +2029,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10332": {
@@ -1998,7 +2065,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10450": {
@@ -2019,7 +2087,8 @@ class PostenMappingDict:
                     "value": "volledig-afgewerkt",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10460": {
@@ -2033,7 +2102,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10461": {
@@ -2047,7 +2117,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10462": {
@@ -2061,7 +2132,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "1 < x <= 2"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10463": {
@@ -2075,7 +2147,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "2 < x"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10701": {
@@ -2096,7 +2169,8 @@ class PostenMappingDict:
                     "value": "51",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10702": {
@@ -2117,7 +2191,8 @@ class PostenMappingDict:
                     "value": "76",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10703": {
@@ -2138,7 +2213,8 @@ class PostenMappingDict:
                     "value": "89",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10711": {
@@ -2159,7 +2235,8 @@ class PostenMappingDict:
                     "value": "51",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10712": {
@@ -2180,7 +2257,8 @@ class PostenMappingDict:
                     "value": "76",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10713": {
@@ -2201,7 +2279,8 @@ class PostenMappingDict:
                     "value": "89",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10714": {
@@ -2222,7 +2301,8 @@ class PostenMappingDict:
                     "value": "114",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10715": {
@@ -2243,7 +2323,8 @@ class PostenMappingDict:
                     "value": "133",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10720": {
@@ -2264,7 +2345,8 @@ class PostenMappingDict:
                     "value": "76",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10721": {
@@ -2285,7 +2367,8 @@ class PostenMappingDict:
                     "value": "89",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10722": {
@@ -2306,7 +2389,8 @@ class PostenMappingDict:
                     "value": "114",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10723": {
@@ -2327,7 +2411,8 @@ class PostenMappingDict:
                     "value": "133",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10730": {
@@ -2341,7 +2426,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE2",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10731": {
@@ -2355,7 +2441,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE3",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10740": {
@@ -2369,7 +2456,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE2",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10741": {
@@ -2383,7 +2471,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE3",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10801": {
@@ -2397,7 +2486,8 @@ class PostenMappingDict:
                     "value": "beton",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10802": {
@@ -2411,7 +2501,8 @@ class PostenMappingDict:
                     "value": "beton",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10803": {
@@ -2425,49 +2516,57 @@ class PostenMappingDict:
                     "value": "beton",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.10901": {
         "None": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestigingsbeugel",
-            "attributen": {}
+            "attributen": {},
+            "isHoofdAsset": False
         }
     },
     "1001.10902": {
         "None": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestigingsbeugel",
-            "attributen": {}
+            "attributen": {},
+            "isHoofdAsset": False
         }
     },
     "1001.10903": {
         "None": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestigingsbeugel",
-            "attributen": {}
+            "attributen": {},
+            "isHoofdAsset": False
         }
     },
     "1001.10904": {
         "None": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestigingsbeugel",
-            "attributen": {}
+            "attributen": {},
+            "isHoofdAsset": False
         }
     },
     "1001.10905": {
         "None": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestigingsbeugel",
-            "attributen": {}
+            "attributen": {},
+            "isHoofdAsset": False
         }
     },
     "1001.10906": {
         "None": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Bevestigingsbeugel",
-            "attributen": {}
+            "attributen": {},
+            "isHoofdAsset": False
         }
     },
     "1001.11101": {
         "None": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Reflectorpaal",
-            "attributen": {}
+            "attributen": {},
+            "isHoofdAsset": False
         }
     },
     "1001.11201": {
@@ -2481,7 +2580,8 @@ class PostenMappingDict:
                     "value": "kilometerpalen-in-kunststof",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.11202": {
@@ -2495,7 +2595,8 @@ class PostenMappingDict:
                     "value": "hectometerpalen-in-kunststof",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20111": {
@@ -2509,7 +2610,8 @@ class PostenMappingDict:
                     "value": "folietype-1",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         },
         "2": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord",
@@ -2528,11 +2630,13 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         },
         "3": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun",
-            "attributen": {}
+            "attributen": {},
+            "isHoofdAsset": False
         }
     },
     "1001.20112": {
@@ -2560,7 +2664,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20113": {
@@ -2588,7 +2693,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20114": {
@@ -2616,7 +2722,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20115": {
@@ -2644,7 +2751,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20116": {
@@ -2672,7 +2780,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20117": {
@@ -2700,7 +2809,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20118": {
@@ -2728,7 +2838,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20121": {
@@ -2756,7 +2867,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20122": {
@@ -2784,7 +2896,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20123": {
@@ -2812,7 +2925,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20124": {
@@ -2840,7 +2954,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20125": {
@@ -2868,7 +2983,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20126": {
@@ -2896,7 +3012,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20127": {
@@ -2924,7 +3041,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20128": {
@@ -2938,7 +3056,8 @@ class PostenMappingDict:
                     "value": "folietype-2",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         },
         "2": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord",
@@ -2957,7 +3076,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20131": {
@@ -2971,7 +3091,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "folietype-3a|folietype-3b"
                 }
-            }
+            },
+            "isHoofdAsset": False
         },
         "2": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord",
@@ -2990,11 +3111,13 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         },
         "3": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun",
-            "attributen": {}
+            "attributen": {},
+            "isHoofdAsset": False
         }
     },
     "1001.20132": {
@@ -3022,7 +3145,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20133": {
@@ -3050,7 +3174,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20134": {
@@ -3078,7 +3203,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20135": {
@@ -3106,7 +3232,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20136": {
@@ -3134,7 +3261,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20137": {
@@ -3162,7 +3290,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20138": {
@@ -3190,7 +3319,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20211": {
@@ -3211,7 +3341,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20212": {
@@ -3232,7 +3363,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20213": {
@@ -3253,7 +3385,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20214": {
@@ -3274,7 +3407,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20215": {
@@ -3309,7 +3443,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE2",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20216": {
@@ -3344,7 +3479,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE3",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20221": {
@@ -3365,7 +3501,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20222": {
@@ -3386,7 +3523,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20223": {
@@ -3407,7 +3545,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20224": {
@@ -3428,7 +3567,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20225": {
@@ -3463,7 +3603,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE2",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20226": {
@@ -3498,7 +3639,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE3",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20231": {
@@ -3519,7 +3661,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20232": {
@@ -3540,7 +3683,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20233": {
@@ -3561,7 +3705,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20234": {
@@ -3582,7 +3727,8 @@ class PostenMappingDict:
                     "value": "middelgroot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20235": {
@@ -3617,7 +3763,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE2",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20236": {
@@ -3652,7 +3799,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE3",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20311": {
@@ -3680,7 +3828,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20312": {
@@ -3708,7 +3857,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20313": {
@@ -3736,7 +3886,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20314": {
@@ -3771,7 +3922,8 @@ class PostenMappingDict:
                     "value": "vakwerksteun",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20315": {
@@ -3806,7 +3958,8 @@ class PostenMappingDict:
                     "value": "vakwerksteun",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20316": {
@@ -3834,7 +3987,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20317": {
@@ -3862,7 +4016,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20318": {
@@ -3897,7 +4052,8 @@ class PostenMappingDict:
                     "value": "vakwerksteun",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20319": {
@@ -3932,7 +4088,8 @@ class PostenMappingDict:
                     "value": "vakwerksteun",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20320": {
@@ -3960,7 +4117,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20321": {
@@ -3995,7 +4153,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE2",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20322": {
@@ -4030,7 +4189,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE3",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20331": {
@@ -4058,7 +4218,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20332": {
@@ -4086,7 +4247,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20333": {
@@ -4114,7 +4276,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20334": {
@@ -4149,7 +4312,8 @@ class PostenMappingDict:
                     "value": "vakwerksteun",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20335": {
@@ -4184,7 +4348,8 @@ class PostenMappingDict:
                     "value": "vakwerksteun",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20336": {
@@ -4212,7 +4377,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20337": {
@@ -4240,7 +4406,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20338": {
@@ -4275,7 +4442,8 @@ class PostenMappingDict:
                     "value": "vakwerksteun",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20339": {
@@ -4303,7 +4471,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20340": {
@@ -4331,7 +4500,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20341": {
@@ -4366,7 +4536,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE2",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20342": {
@@ -4401,7 +4572,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE3",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20351": {
@@ -4429,7 +4601,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20352": {
@@ -4457,7 +4630,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20353": {
@@ -4485,7 +4659,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20354": {
@@ -4520,7 +4695,8 @@ class PostenMappingDict:
                     "value": "vakwerksteun",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20355": {
@@ -4555,7 +4731,8 @@ class PostenMappingDict:
                     "value": "vakwerksteun",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20356": {
@@ -4583,7 +4760,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20357": {
@@ -4611,7 +4789,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20358": {
@@ -4646,7 +4825,8 @@ class PostenMappingDict:
                     "value": "vakwerksteun",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20359": {
@@ -4681,7 +4861,8 @@ class PostenMappingDict:
                     "value": "vakwerksteun",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20360": {
@@ -4709,7 +4890,8 @@ class PostenMappingDict:
                     "value": "groot",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20361": {
@@ -4744,7 +4926,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE2",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20362": {
@@ -4779,7 +4962,8 @@ class PostenMappingDict:
                     "value": "botsvriendelijke-steun-type-100NE3",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20391": {
@@ -4793,7 +4977,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20421": {
@@ -4807,7 +4992,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "2.6 < x"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20422": {
@@ -4821,7 +5007,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "2.6 < x"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20423": {
@@ -4835,7 +5022,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "2.6 < x"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.20424": {
@@ -4849,7 +5037,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "2.6 < x"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30111": {
@@ -4863,7 +5052,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0 < x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30112": {
@@ -4877,7 +5067,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30113": {
@@ -4891,7 +5082,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "1 < x"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30121": {
@@ -4905,7 +5097,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0 < x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30122": {
@@ -4919,7 +5112,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30123": {
@@ -4933,7 +5127,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "1 < x"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30131": {
@@ -4947,7 +5142,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0 < x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30132": {
@@ -4961,7 +5157,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30133": {
@@ -4975,7 +5172,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "1 < x"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30141": {
@@ -4989,7 +5187,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0 < x <= 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30142": {
@@ -5003,7 +5202,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30143": {
@@ -5017,7 +5217,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "1 < x"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30150": {
@@ -5031,7 +5232,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "1 < x"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30155": {
@@ -5045,7 +5247,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "1 < x"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30161": {
@@ -5059,7 +5262,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0 < x < 0.2"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30162": {
@@ -5073,7 +5277,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.2 < x < 0.5"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30163": {
@@ -5087,19 +5292,22 @@ class PostenMappingDict:
                     "value": None,
                     "range": "0.5 < x <= 1"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30325": {
         "None": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord",
-            "attributen": {}
+            "attributen": {},
+            "isHoofdAsset": False
         }
     },
     "1001.30331": {
         "None": {
             "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord",
-            "attributen": {}
+            "attributen": {},
+            "isHoofdAsset": False
         }
     },
     "1001.30335": {
@@ -5113,7 +5321,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30701": {
@@ -5127,7 +5336,8 @@ class PostenMappingDict:
                     "value": "51",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30702": {
@@ -5141,7 +5351,8 @@ class PostenMappingDict:
                     "value": "76",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30703": {
@@ -5155,7 +5366,8 @@ class PostenMappingDict:
                     "value": "89",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30704": {
@@ -5169,7 +5381,8 @@ class PostenMappingDict:
                     "value": "114",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.30705": {
@@ -5183,7 +5396,8 @@ class PostenMappingDict:
                     "value": "133",
                     "range": None
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     },
     "1001.31201": {
@@ -5197,7 +5411,8 @@ class PostenMappingDict:
                     "value": None,
                     "range": "hectometerpalen-in-kunststof|kilometerpalen-in-kunststof"
                 }
-            }
+            },
+            "isHoofdAsset": False
         }
     }
 }
