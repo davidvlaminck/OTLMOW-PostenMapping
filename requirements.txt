@@ -20,3 +20,4 @@ pytest-subtests==0.10.0
 rdflib==6.2.0
 six==1.16.0
 wcwidth==0.2.6
+sqlalchemy>=2.0.17

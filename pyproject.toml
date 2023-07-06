@@ -19,7 +19,8 @@ classifiers = [
 ]
 requires-python = ">=3.7"
 dependencies = [
-  'otlmow_converter >= 0.9'
+  'otlmow_converter >= 0.9',
+    'sqlalchemy >= 2.0.0',
 ]
 
 [tool.setuptools.packages.find]
