@@ -7,9 +7,10 @@ from otlmow_postenmapping.PostAssetFactory import PostAssetFactory
 
 def set_up_factory():
     this_file = Path(__file__)
-    f = PostAssetFactory(this_file.parent / 'Postenmapping v1.0.0 RC3 Verkeersborden-gemapt.db',
-                         directory=this_file.parent)
-    return f
+    return PostAssetFactory(
+        this_file.parent / 'Postenmapping v1.0.0 RC3 Verkeersborden-gemapt.db',
+        directory=this_file.parent,
+    )
 
 
 def test_load_factory_with_default_mapping():
@@ -46,12 +47,12 @@ def test_create_assets_from_post_1001_20111(subtests):
     factory = set_up_factory()
     created_assets = factory.create_assets_from_post('1001.20111')
 
-    folie_count = sum(1 for a in created_assets if
-                      a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie')
-    bord_count = sum(1 for a in created_assets if
-                     a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord')
-    steun_count = sum(1 for a in created_assets if
-                      a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun')
+    folie_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie'
+                      for a in created_assets)
+    bord_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord'
+                     for a in created_assets)
+    steun_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun'
+                      for a in created_assets)
 
     assert folie_count == 1
     assert bord_count == 1
@@ -75,12 +76,12 @@ def test_create_assets_from_post_1001_20128(subtests):
     factory = set_up_factory()
     created_assets = factory.create_assets_from_post('1001.20128')
 
-    folie_count = sum(1 for a in created_assets if
-                      a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie')
-    bord_count = sum(1 for a in created_assets if
-                     a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord')
-    steun_count = sum(1 for a in created_assets if
-                      a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun')
+    folie_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie'
+                      for a in created_assets)
+    bord_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord'
+                     for a in created_assets)
+    steun_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun'
+                      for a in created_assets)
 
     assert folie_count == 1
     assert bord_count == 1
@@ -106,12 +107,12 @@ def test_create_assets_from_post_1001_20131(subtests):
     factory = set_up_factory()
     created_assets = factory.create_assets_from_post('1001.20131')
 
-    folie_count = sum(1 for a in created_assets if
-                      a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie')
-    bord_count = sum(1 for a in created_assets if
-                     a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord')
-    steun_count = sum(1 for a in created_assets if
-                      a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun')
+    folie_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie'
+                      for a in created_assets)
+    bord_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord'
+                     for a in created_assets)
+    steun_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun'
+                      for a in created_assets)
 
     assert folie_count == 1
     assert bord_count == 1
@@ -135,12 +136,12 @@ def test_create_assets_from_post_1001_30704(subtests):
     factory = set_up_factory()
     created_assets = factory.create_assets_from_post('1001.30704')
 
-    folie_count = sum(1 for a in created_assets if
-                      a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie')
-    bord_count = sum(1 for a in created_assets if
-                     a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord')
-    steun_count = sum(1 for a in created_assets if
-                      a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun')
+    folie_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie'
+                      for a in created_assets)
+    bord_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord'
+                     for a in created_assets)
+    steun_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun'
+                      for a in created_assets)
 
     assert folie_count == 0
     assert bord_count == 0
@@ -159,12 +160,12 @@ def test_create_assets_from_post_1001_10171(subtests):
     factory = set_up_factory()
     created_assets = factory.create_assets_from_post('1001.10171')
 
-    folie_count = sum(1 for a in created_assets if
-                      a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie')
-    bord_count = sum(1 for a in created_assets if
-                     a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord')
-    steun_count = sum(1 for a in created_assets if
-                      a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun')
+    folie_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie'
+                      for a in created_assets)
+    bord_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord'
+                     for a in created_assets)
+    steun_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun'
+                      for a in created_assets)
 
     assert folie_count == 1
     assert bord_count == 1
