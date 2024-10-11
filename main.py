@@ -3,7 +3,7 @@ from pathlib import Path
 from otlmow_converter.OtlmowConverter import OtlmowConverter
 
 from otlmow_postenmapping.PostAssetFactory import PostAssetFactory
-from pysize import get_size
+
 
 if __name__ == '__main__':
     this_directory = Path(__file__).parent
