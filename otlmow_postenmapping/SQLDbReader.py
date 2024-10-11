@@ -13,17 +13,15 @@ class SQLDbReader:
             self.path = path.resolve()
             self.file_exists = os.path.isfile(self.path)
             if not self.file_exists:
-                raise FileNotFoundError(str(self.path) + " is not a valid path. File does not exist.")
+                raise FileNotFoundError(f"{str(self.path)} is not a valid path. File does not exist.")
 
     def performReadQuery(self, query: str, params: dict):
         self.file_exists = os.path.isfile(self.path)
         if not self.file_exists:
-            raise FileNotFoundError(self.path + " is not a valid path. File does not exist.")
+            raise FileNotFoundError(f"{self.path} is not a valid path. File does not exist.")
 
         con = sqlite3.connect(self.path)
         cur = con.cursor()
-        data = []
-        for row in cur.execute(query, params):
-            data.append(row)
+        data = list(cur.execute(query, params))
         con.close()
         return data

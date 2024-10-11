@@ -1,3 +1,4 @@
+import copy
 import importlib
 import json
 import os
@@ -5,15 +6,16 @@ from pathlib import Path
 from typing import List, Dict
 
 from otlmow_converter.DotnotationHelper import DotnotationHelper
-from otlmow_model.BaseClasses.FloatOrDecimalField import FloatOrDecimalField
-from otlmow_model.BaseClasses.KeuzelijstField import KeuzelijstField
-from otlmow_model.BaseClasses.OTLObject import OTLObject
-from otlmow_model.Helpers.AssetCreator import dynamic_create_instance_from_uri
+from otlmow_model.OtlmowModel.BaseClasses.FloatOrDecimalField import FloatOrDecimalField
+from otlmow_model.OtlmowModel.BaseClasses.KeuzelijstField import KeuzelijstField
+from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLObject, dynamic_create_instance_from_uri
 
 from otlmow_postenmapping.SQLDbReader import SQLDbReader
 
 
 class PostAssetFactory:
+    mapping_dict = None
+
     def __init__(self, posten_mapping_path: Path = None, directory: Path = None, mapping_name: str = 'PostenMapping') -> None:
         self.mapping_dict = None
         if posten_mapping_path is not None:
@@ -35,6 +37,70 @@ class PostAssetFactory:
         class_ = getattr(py_mod, class_name)
         return class_().mapping_dict
 
+    def create_assets_from_template(self, template_key: str, base_asset: OTLObject, unique_index: int) -> List[OTLObject]:
+        mapping = copy.deepcopy(self.mapping_dict[template_key])
+        copy_base_asset = dynamic_create_instance_from_uri(base_asset.typeURI)
+        copy_base_asset.assetId.identificator = base_asset.assetId.identificator
+        copy_base_asset.assetId.toegekendDoor = base_asset.assetId.toegekendDoor
+        copy_base_asset.bestekPostNummer = base_asset.bestekPostNummer
+        copy_base_asset.bestekPostNummer.remove(template_key)
+        base_asset_toestand = base_asset.toestand
+        created_assets = [copy_base_asset]
+
+        # change the local id of the base asset to the real id in the mapping
+        # and change relation id's accordingly
+        base_local_id = next(local_id for local_id, asset_template in mapping.items() if asset_template['isHoofdAsset'])
+        for local_id, asset_template in mapping.items():
+            if local_id == base_local_id:
+                continue
+            if 'bronAssetId.identificator' in asset_template['attributen']:
+                if asset_template['attributen']['bronAssetId.identificator']['value'] == base_local_id:
+                    asset_template['attributen']['bronAssetId.identificator'][
+                        'value'] = base_asset.assetId.identificator
+                else:
+                    asset_template['attributen']['bronAssetId.identificator']['value'] = \
+                        f"{asset_template['attributen']['bronAssetId.identificator']['value']}_{unique_index}"
+
+            if 'doelAssetId.identificator' in asset_template['attributen']:
+                if asset_template['attributen']['doelAssetId.identificator']['value'] == base_local_id:
+                    asset_template['attributen']['doelAssetId.identificator'][
+                        'value'] = base_asset.assetId.identificator
+                else:
+                    asset_template['attributen']['doelAssetId.identificator']['value'] = \
+                        f"{asset_template['attributen']['doelAssetId.identificator']['value']}_{unique_index}"
+
+        for asset_to_create in mapping.keys():
+            if asset_to_create != base_local_id:
+                type_uri = mapping[asset_to_create]['typeURI']
+                asset = dynamic_create_instance_from_uri(class_uri=type_uri)
+                asset.assetId.identificator = f'{asset_to_create}_{unique_index}'
+                created_assets.append(asset)
+                if hasattr(asset, 'toestand'):
+                    asset.toestand = base_asset_toestand
+            else:
+                asset = copy_base_asset
+
+            for attr in mapping[asset_to_create]['attributen'].values():
+                if attr['dotnotation'] == 'typeURI':
+                    continue
+                if attr['value'] is not None:
+                    value = attr['value']
+                    if attr['type'] == 'http://www.w3.org/2001/XMLSchema#decimal':
+                        value = float(attr['value'])
+
+                    if asset == copy_base_asset:
+                        asset_attr = DotnotationHelper.get_attribute_by_dotnotation(
+                            base_asset, dotnotation=attr['dotnotation'], waarde_shortcut=True)
+                        if isinstance(asset_attr, list):
+                            asset_attr = asset_attr[0]
+                        if asset_attr.waarde is not None:
+                            continue
+
+                    DotnotationHelper.set_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'],
+                                                                   waarde_shortcut=True, value=value)
+
+        return created_assets
+
     def create_assets_from_type_template(self, template_key: str, base_asset: OTLObject) -> List[OTLObject]:
         mapping = self.mapping_dict[template_key]
         created_assets = [base_asset]
@@ -45,16 +111,18 @@ class PostAssetFactory:
             created_assets.append(asset)
 
             for attr in mapping[asset_to_create]['attributen'].values():
+                if attr['dotnotation'] == 'typeURI':
+                    continue
                 if attr['value'] is not None:
                     value = attr['value']
                     if attr['type'] == 'http://www.w3.org/2001/XMLSchema#decimal':
                         value = float(attr['value'])
 
                     DotnotationHelper.set_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'],
-                                                                   waarde_shortcut_applicable=True, value=value)
+                                                                   waarde_shortcut=True, value=value)
                 elif attr['range'] is not None:
-                    asset_atr = DotnotationHelper.get_attributes_by_dotnotation(asset, dotnotation=attr['dotnotation'],
-                                                                                waarde_shortcut_applicable=True)
+                    asset_atr = DotnotationHelper.get_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'],
+                                                                                waarde_shortcut=True)
                     field = asset_atr.field
                     if field == FloatOrDecimalField:
                         asset_atr.field = self._create_extended_field_float_or_decimal(field, attr['range'])
@@ -80,10 +148,10 @@ class PostAssetFactory:
                         value = float(attr['value'])
 
                     DotnotationHelper.set_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'],
-                                                                   waarde_shortcut_applicable=True, value=value)
+                                                                   waarde_shortcut=True, value=value)
                 elif attr['range'] is not None:
-                    asset_atr = DotnotationHelper.get_attributes_by_dotnotation(asset, dotnotation=attr['dotnotation'],
-                                                                                waarde_shortcut_applicable=True)
+                    asset_atr = DotnotationHelper.get_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'],
+                                                                               waarde_shortcut=True)
                     field = asset_atr.field
                     if field == FloatOrDecimalField:
                         asset_atr.field = self._create_extended_field_float_or_decimal(field, attr['range'])
@@ -154,25 +222,25 @@ class PostAssetFactory:
             {})[0][0]
 
         data = reader.performReadQuery(
-            """SELECT standaardpostnummer, typeURI, attribuutURI, dotnotatie, dtAttriURI, defaultWaarde, bereik, 
-                usageNote, isMeetstaatAttr, isAltijdInTeVullen, isBasisMapping, mappingStatus, mappingOpmerking, TempID, 
-                isHoofdAsset 
-            FROM MappingSB250
+            """SELECT code, typeURI, attribuutURI, dotnotatie, dataTypeURI, defaultWaarde, bereik, 
+                usageNote, isMeetstaatAttribuut, altijdInTeVullen, isBasisMapping, mappingStatus, mappingOpmerking, tempId, 
+                isHoofdAsset, unionTypeCriterium
+            FROM Mapping
             WHERE isBasisMapping = '1'""",
             {})
 
         mapping_dict = {'version': version}
         for row in data:
-            mapping_nr = str(row[0])
+            template_code, type_uri = str(row[0]), str(row[1])
             temp_id = str(row[13])
-            type_uri = str(row[1])
-            if mapping_nr not in mapping_dict:
-                mapping_dict[mapping_nr] = {}
 
-            if temp_id not in mapping_dict[mapping_nr]:
-                mapping_dict[mapping_nr][temp_id] = {'typeURI': type_uri, 'attributen': {}}
+            if template_code not in mapping_dict:
+                mapping_dict[template_code] = {}
 
-            mapping_dict[mapping_nr][temp_id]['isHoofdAsset'] = (row[14] == 'true')
+            if temp_id not in mapping_dict[template_code]:
+                mapping_dict[template_code][temp_id] = {'typeURI': type_uri, 'attributen': {}}
+
+            mapping_dict[template_code][temp_id]['isHoofdAsset'] = (row[14] == 1)
 
             attr_uri = str(row[2])
             if attr_uri != 'None':
@@ -184,13 +252,17 @@ class PostAssetFactory:
                 bereik_str = str(row[6])
                 if bereik_str == 'None':
                     bereik_str = None
+                union_type_criterium_str = str(row[15])
+                if union_type_criterium_str == 'None':
+                    union_type_criterium_str = None
 
-                mapping_dict[mapping_nr][temp_id]['attributen'][dotnot_str] = {
+                mapping_dict[template_code][temp_id]['attributen'][dotnot_str] = {
                     'typeURI': attr_uri,
                     'dotnotation': dotnot_str,
                     'type': type_str,
                     'value': waarde_str,
-                    'range': bereik_str
+                    'range': bereik_str,
+                    'union_type_criterium': union_type_criterium_str
                 }
 
         PostAssetFactory._write_posten_mapping(mapping_dict=mapping_dict, directory=directory,
@@ -252,4 +324,3 @@ class PostAssetFactory:
         with open(file_path, "w") as file:
             file.write(f'class {mapping_name}Dict:\n    mapping_dict = ' + posten_mapping_str.replace('null', 'None').
                        replace('true', 'True').replace('false', 'False'))
-
