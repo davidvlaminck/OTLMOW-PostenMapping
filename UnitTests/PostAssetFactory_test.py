@@ -1,7 +1,10 @@
 from pathlib import Path
 
 import pytest
+from otlmow_model.OtlmowModel.Classes.Onderdeel.Camera import Camera
 
+from otlmow_postenmapping.Exceptions.InvalidMappingKeyError import InvalidMappingKeyError
+from otlmow_postenmapping.Exceptions.MultipleMappingKeysError import MultipleMappingKeysError
 from otlmow_postenmapping.PostAssetFactory import PostAssetFactory
 
 
@@ -130,6 +133,39 @@ def test_create_assets_from_post_1001_20131(subtests):
     with subtests.test(msg='incorrect value, raising ValueError'):
         with pytest.raises(ValueError):
             folie.folietype = 'folietype-1'
+
+def test_get_valid_template_key_from_base_asset_happy_flow():
+    # arrange opzetten test scenario
+    factory = set_up_factory() # maakt zelf een factory die specifiek gemaakt is voor uw test
+    asset = Camera() # maakt een asset aan die specifiek gemaakt is voor uw test
+    asset.bestekPostNummer = ['1001.10111']
+
+    # act code uitvoeren binnen scenario
+    template_key = factory.get_valid_template_key_from_base_asset(asset)
+
+    # assert checken of de code het scenario correct heeft uitgevoerd
+    assert template_key == '1001.10111'
+
+def test_get_valid_template_key_from_base_asset_invalid_template_key():
+    # arrange opzetten test scenario
+    factory = set_up_factory()  # maakt zelf een factory die specifiek gemaakt is voor uw test
+    asset = Camera()  # maakt een asset aan die specifiek gemaakt is voor uw test
+    asset.bestekPostNummer = ['invalid_template_key']
+
+    # act + assert
+    with pytest.raises(InvalidMappingKeyError):
+        factory.get_valid_template_key_from_base_asset(asset)
+
+def test_get_valid_template_key_from_base_asset_multiple_template_keys():
+    # arrange opzetten test scenario
+    factory = set_up_factory()  # maakt zelf een factory die specifiek gemaakt is voor uw test
+    asset = Camera()  # maakt een asset aan die specifiek gemaakt is voor uw test
+    asset.bestekPostNummer = ['1001.10111', '1001.10112']
+
+    # act + assert
+    with pytest.raises(MultipleMappingKeysError):
+        factory.get_valid_template_key_from_base_asset(asset)
+
 
 
 def test_create_assets_from_post_1001_30704(subtests):

@@ -37,6 +37,9 @@ class PostAssetFactory:
         class_ = getattr(py_mod, class_name)
         return class_().mapping_dict
 
+    def get_valid_template_key_from_base_asset(self, base_asset: OTLObject) -> str:
+        pass
+
     def create_assets_from_template(self, template_key: str, base_asset: OTLObject, unique_index: int) -> List[OTLObject]:
         mapping = copy.deepcopy(self.mapping_dict[template_key])
         copy_base_asset = dynamic_create_instance_from_uri(base_asset.typeURI)

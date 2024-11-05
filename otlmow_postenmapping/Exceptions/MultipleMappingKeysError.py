@@ -1,0 +1,2 @@
+class MultipleMappingKeysError(Exception):
+    pass

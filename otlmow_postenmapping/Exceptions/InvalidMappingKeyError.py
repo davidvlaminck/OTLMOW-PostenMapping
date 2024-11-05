@@ -1,0 +1,2 @@
+class InvalidMappingKeyError(Exception):
+    pass
