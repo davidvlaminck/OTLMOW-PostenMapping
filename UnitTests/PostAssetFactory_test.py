@@ -152,7 +152,7 @@ def test_get_valid_template_key_from_base_asset_happy_flow():
     asset.bestekPostNummer = ['1001.10111']
 
     # act code uitvoeren binnen scenario
-    template_key = factory.get_valid_template_key_from_base_asset(asset)
+    template_key = factory.get_valid_mapping_key_from_base_asset(asset)
 
     # assert checken of de code het scenario correct heeft uitgevoerd
     assert template_key == '1001.10111'
@@ -165,7 +165,7 @@ def test_get_valid_template_key_from_base_asset_invalid_template_key():
 
     # act + assert
     with pytest.raises(InvalidMappingKeyError):
-        factory.get_valid_template_key_from_base_asset(asset)
+        factory.get_valid_mapping_key_from_base_asset(asset)
 
 def test_get_valid_template_key_from_base_asset_multiple_template_keys():
     # arrange opzetten test scenario
@@ -175,7 +175,7 @@ def test_get_valid_template_key_from_base_asset_multiple_template_keys():
 
     # act + assert
     with pytest.raises(MultipleMappingKeysError):
-        factory.get_valid_template_key_from_base_asset(asset)
+        factory.get_valid_mapping_key_from_base_asset(asset)
 
 
 

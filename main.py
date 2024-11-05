@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     template_created_assets = []
     for i, asset in enumerate(start_assets):
-        template_created_assets.extend(f.create_assets_from_template(
+        template_created_assets.extend(f.create_assets_from_mapping(
             'WVlichtmast_config1', asset, unique_index=i))
 
     print(template_created_assets)
