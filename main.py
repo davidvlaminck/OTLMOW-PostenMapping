@@ -18,4 +18,4 @@ if __name__ == '__main__':
 
     print(template_created_assets)
     OtlmowConverter().from_objects_to_file(sequence_of_objects=template_created_assets,
-                                           file_path=this_directory / 'output.xlsx')
+                                           file_path=this_directory / 'output.xlsx', abbreviate_excel_sheettitles=True)
