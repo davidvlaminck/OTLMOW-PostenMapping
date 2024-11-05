@@ -3,17 +3,24 @@ from pathlib import Path
 import pytest
 from otlmow_model.OtlmowModel.Classes.Onderdeel.Camera import Camera
 
+from UnitTests.PostenMappingDict import PostenMappingDict
 from otlmow_postenmapping.Exceptions.InvalidMappingKeyError import InvalidMappingKeyError
 from otlmow_postenmapping.Exceptions.MultipleMappingKeysError import MultipleMappingKeysError
 from otlmow_postenmapping.PostAssetFactory import PostAssetFactory
 
 
-def set_up_factory():
+def set_up_factory_from_artefact() -> PostAssetFactory:
     this_file = Path(__file__)
     return PostAssetFactory(
         this_file.parent / 'Postenmapping v1.0.0 RC3 Verkeersborden-gemapt.db',
         directory=this_file.parent,
     )
+
+
+def set_up_factory_with_unittest_mapping() -> PostAssetFactory:
+    factory = PostAssetFactory()
+    factory.mapping_dict = PostenMappingDict.mapping_dict
+    return factory
 
 
 def test_load_factory_with_default_mapping():
@@ -22,32 +29,36 @@ def test_load_factory_with_default_mapping():
 
 
 def test_load_vkb_postenmapping():
-    factory = set_up_factory()
+    factory = set_up_factory_with_unittest_mapping()
     mapping = factory.mapping_dict
-    assert '1001.30704' in mapping
+    assert '1001.10714' in mapping
     assert '1001.20111' in mapping
 
-    assert mapping['1001.30704']['1'][
+    assert mapping['1001.10714']['None'][
                'typeURI'] == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun'
     assert mapping['1001.20111']['2'][
                'typeURI'] == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendVerkeersbord'
 
-    assert mapping['1001.30704'] == {
-        '1': {
-            'typeURI': 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun',
-            'attributen':
-                {'diameter': {
-                    'typeURI': 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun.diameter',
-                    'dotnotation': 'diameter',
-                    'type': 'http://www.w3.org/2001/XMLSchema#decimal',
-                    'value': '114',
-                    'range': None}},
-            'isHoofdAsset': False}
-    }
+    assert mapping['1001.10714'] == {
+        'None':
+             {'attributen': {'diameter':
+                                 {'dotnotation': 'diameter',
+                                  'range': None,
+                                  'type': 'http://www.w3.org/2001/XMLSchema#decimal',
+                                  'typeURI': 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun.diameter',
+                                  'value': '114'},
+                             'lengte':
+                                 {'dotnotation': 'lengte',
+                                  'range': None,
+                                  'type': 'http://www.w3.org/2001/XMLSchema#decimal',
+                                  'typeURI': 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun.lengte',
+                                  'value': None}},
+              'isHoofdAsset': False,
+              'typeURI': 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#Verkeersbordsteun'}}
 
 
 def test_create_assets_from_post_1001_20111(subtests):
-    factory = set_up_factory()
+    factory = set_up_factory_with_unittest_mapping()
     created_assets = factory.create_assets_from_post('1001.20111')
 
     folie_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie'
@@ -76,7 +87,7 @@ def test_create_assets_from_post_1001_20111(subtests):
 
 
 def test_create_assets_from_post_1001_20128(subtests):
-    factory = set_up_factory()
+    factory = set_up_factory_with_unittest_mapping()
     created_assets = factory.create_assets_from_post('1001.20128')
 
     folie_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie'
@@ -107,7 +118,7 @@ def test_create_assets_from_post_1001_20128(subtests):
 
 
 def test_create_assets_from_post_1001_20131(subtests):
-    factory = set_up_factory()
+    factory = set_up_factory_with_unittest_mapping()
     created_assets = factory.create_assets_from_post('1001.20131')
 
     folie_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie'
@@ -136,7 +147,7 @@ def test_create_assets_from_post_1001_20131(subtests):
 
 def test_get_valid_template_key_from_base_asset_happy_flow():
     # arrange opzetten test scenario
-    factory = set_up_factory() # maakt zelf een factory die specifiek gemaakt is voor uw test
+    factory = set_up_factory_with_unittest_mapping() # maakt zelf een factory die specifiek gemaakt is voor uw test
     asset = Camera() # maakt een asset aan die specifiek gemaakt is voor uw test
     asset.bestekPostNummer = ['1001.10111']
 
@@ -148,7 +159,7 @@ def test_get_valid_template_key_from_base_asset_happy_flow():
 
 def test_get_valid_template_key_from_base_asset_invalid_template_key():
     # arrange opzetten test scenario
-    factory = set_up_factory()  # maakt zelf een factory die specifiek gemaakt is voor uw test
+    factory = set_up_factory_with_unittest_mapping()  # maakt zelf een factory die specifiek gemaakt is voor uw test
     asset = Camera()  # maakt een asset aan die specifiek gemaakt is voor uw test
     asset.bestekPostNummer = ['invalid_template_key']
 
@@ -158,7 +169,7 @@ def test_get_valid_template_key_from_base_asset_invalid_template_key():
 
 def test_get_valid_template_key_from_base_asset_multiple_template_keys():
     # arrange opzetten test scenario
-    factory = set_up_factory()  # maakt zelf een factory die specifiek gemaakt is voor uw test
+    factory = set_up_factory_with_unittest_mapping()  # maakt zelf een factory die specifiek gemaakt is voor uw test
     asset = Camera()  # maakt een asset aan die specifiek gemaakt is voor uw test
     asset.bestekPostNummer = ['1001.10111', '1001.10112']
 
@@ -169,7 +180,7 @@ def test_get_valid_template_key_from_base_asset_multiple_template_keys():
 
 
 def test_create_assets_from_post_1001_30704(subtests):
-    factory = set_up_factory()
+    factory = set_up_factory_with_unittest_mapping()
     created_assets = factory.create_assets_from_post('1001.30704')
 
     folie_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie'
@@ -193,7 +204,7 @@ def test_create_assets_from_post_1001_30704(subtests):
 
 
 def test_create_assets_from_post_1001_10171(subtests):
-    factory = set_up_factory()
+    factory = set_up_factory_with_unittest_mapping()
     created_assets = factory.create_assets_from_post('1001.10171')
 
     folie_count = sum(a.typeURI == 'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#RetroreflecterendeFolie'
