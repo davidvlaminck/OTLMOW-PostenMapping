@@ -56,15 +56,25 @@ class PostAssetFactory:
         if not bestek_post_nummer:
             raise MissingMappingKeyError("bestekPostNummer is missing or empty in the base asset")
 
-        if len(bestek_post_nummer) > 1:
-            raise MultipleMappingKeysError("Multiple values found for bestekPostNummer; expected only one.")
+        # Initialize an empty list to store all the valid keys
+        valid_keys = []
+        # Loop over the numbers and check the number of matches
+        for candidate_key in bestek_post_nummer:
+            if candidate_key in self.mapping_dict:
+                valid_keys.append(candidate_key)
 
-        # Retrieve the first and only item in bestek_post_nummer list
-        key = bestek_post_nummer[0]
-        if key in self.mapping_dict:
-            return key
+        # Remove duplicate identical values from the list, by converting it to a dictionary and back.
+        valid_keys = list(dict.fromkeys(valid_keys))
+
+        # Test the number of valid keys that were found
+        nbr_valid_keys = len(valid_keys)
+        if nbr_valid_keys == 0:
+            raise InvalidMappingKeyError(f"bestekPostNummer(s) not found in posten mapping dictionary")
+        elif nbr_valid_keys > 1:
+            raise MultipleMappingKeysError("Multiple values found for bestekPostNummer; expected one.")
         else:
-            raise InvalidMappingKeyError(f"Invalid mapping key '{key}' not found in posten mapping dictionary")
+            return valid_keys[0]
+
 
     def create_assets_from_mapping(self, base_asset: OTLObject, unique_index: int) -> List[OTLObject]:
         mapping_key = self.get_valid_mapping_key_from_base_asset(base_asset)
