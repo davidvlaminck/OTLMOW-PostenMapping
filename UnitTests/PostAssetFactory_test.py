@@ -146,29 +146,24 @@ def test_create_assets_from_post_1001_20131(subtests):
         with pytest.raises(ValueError):
             folie.folietype = 'folietype-1'
 
-def test_get_valid_template_key_from_base_asset_happy_flow():
-    # arrange opzetten test scenario 1
-    factory = set_up_factory_with_unittest_mapping() # maakt zelf een factory die specifiek gemaakt is voor uw test
-    asset = Camera() # maakt een asset aan die specifiek gemaakt is voor uw test
-    asset.bestekPostNummer = ['1001.10111']
+def test_get_valid_template_key_from_base_asset_happy_flow(subtests):
+    with subtests.test(msg='1 bestekPostNummer beschikbaar'):
+        factory = set_up_factory_with_unittest_mapping() # maakt zelf een factory die specifiek gemaakt is voor uw test
+        asset = Camera() # maakt een asset aan die specifiek gemaakt is voor uw test
+        asset.bestekPostNummer = ['1001.10111']
 
-    # act code uitvoeren binnen scenario
-    template_key = factory.get_valid_mapping_key_from_base_asset(asset)
+        template_key = factory.get_valid_mapping_key_from_base_asset(asset)
 
-    # assert checken of de code het scenario correct heeft uitgevoerd
-    assert template_key == '1001.10111'
+        assert template_key == '1001.10111'
 
-    # arrange opzetten test scenario 2
-    factory = set_up_factory_with_unittest_mapping() # maakt zelf een factory die specifiek gemaakt is voor uw test
-    asset = Camera() # maakt een asset aan die specifiek gemaakt is voor uw test
-    asset.bestekPostNummer = ['1001.10111', 'randomBestekPostNummer']
+    with subtests.test(msg='Meerdere bestekPostNummers beschikbaar, waarvan minstens 1 geldig'):
+        factory = set_up_factory_with_unittest_mapping() # maakt zelf een factory die specifiek gemaakt is voor uw test
+        asset = Camera() # maakt een asset aan die specifiek gemaakt is voor uw test
+        asset.bestekPostNummer = ['1001.10111', 'randomBestekPostNummer']
 
-    # act code uitvoeren binnen scenario
-    template_key = factory.get_valid_mapping_key_from_base_asset(asset)
+        template_key = factory.get_valid_mapping_key_from_base_asset(asset)
 
-    # assert checken of de code het scenario correct heeft uitgevoerd
-    assert template_key == '1001.10111'
-
+        assert template_key == '1001.10111'
 
 
 def test_get_valid_template_key_from_base_asset_invalid_template_key():
