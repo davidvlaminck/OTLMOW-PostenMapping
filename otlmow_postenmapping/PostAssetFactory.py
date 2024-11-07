@@ -42,38 +42,40 @@ class PostAssetFactory:
         return class_().mapping_dict
 
     def get_valid_mapping_key_from_base_asset(self, base_asset: OTLObject) -> str:
-        """
-        Searches in the "PostenMapping dictionary" for the "PostenMapping key" that matches with the "BestekPost nummer".
+        """Obtain mapping key
 
-        Args:
-            base_asset (OTLObject): The base asset, from which a "BestekPost nummer" is derived.
+        Searches in the "PostenMapping dictionary" for the "PostenMapping key"
+        that matches with the "BestekPost nummer"
 
-        Returns:
-            str: The valid "PostenMapping key"
+        Parameters
+        ----------
+        base_asset : OTLObject
+            The base asset, from which a "BestekPost nummer" is derived.
+
+        Returns
+        -------
+        str
+            The valid "PostenMapping key"
         """
         bestek_post_nummer = base_asset.bestekPostNummer
 
         if not bestek_post_nummer:
             raise MissingMappingKeyError("bestekPostNummer is missing or empty in the base asset")
 
-        # Initialize an empty list to store all the valid keys
-        valid_keys = []
-        # Loop over the numbers and check the number of matches
-        for candidate_key in bestek_post_nummer:
-            if candidate_key in self.mapping_dict:
-                valid_keys.append(candidate_key)
+        valid_keys = {
+            candidate_key
+            for candidate_key in bestek_post_nummer
+            if candidate_key in self.mapping_dict
+        }
 
-        # Remove duplicate identical values from the list, by converting it to a dictionary and back.
-        valid_keys = list(dict.fromkeys(valid_keys))
-
-        # Test the number of valid keys that were found
-        nbr_valid_keys = len(valid_keys)
-        if nbr_valid_keys == 0:
-            raise InvalidMappingKeyError(f"bestekPostNummer(s) not found in posten mapping dictionary")
-        elif nbr_valid_keys > 1:
+        number_valid_keys = len(valid_keys)
+        if number_valid_keys == 0:
+            raise InvalidMappingKeyError(
+                "bestekPostNummer(s) not found in posten mapping dictionary"
+            )
+        elif number_valid_keys > 1:
             raise MultipleMappingKeysError("Multiple values found for bestekPostNummer; expected one.")
-        else:
-            return valid_keys[0]
+        return list(valid_keys)[0]
 
 
     def create_assets_from_mapping(self, base_asset: OTLObject, unique_index: int) -> List[OTLObject]:
