@@ -1,0 +1,2 @@
+class MissingMappingKeyError(Exception):
+    pass

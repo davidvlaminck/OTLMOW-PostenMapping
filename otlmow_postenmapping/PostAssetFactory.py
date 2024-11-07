@@ -10,6 +10,10 @@ from otlmow_model.OtlmowModel.BaseClasses.FloatOrDecimalField import FloatOrDeci
 from otlmow_model.OtlmowModel.BaseClasses.KeuzelijstField import KeuzelijstField
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLObject, dynamic_create_instance_from_uri
 
+from otlmow_postenmapping.Exceptions.InvalidMappingKeyError import InvalidMappingKeyError
+from otlmow_postenmapping.Exceptions.MultipleMappingKeysError import MultipleMappingKeysError
+from otlmow_postenmapping.Exceptions.MissingMappingKeyError import MissingMappingKeyError
+
 from otlmow_postenmapping.SQLDbReader import SQLDbReader
 
 
@@ -38,9 +42,45 @@ class PostAssetFactory:
         return class_().mapping_dict
 
     def get_valid_mapping_key_from_base_asset(self, base_asset: OTLObject) -> str:
-        pass
+        """Obtain mapping key
 
-    def create_assets_from_mapping(self, mapping_key: str, base_asset: OTLObject, unique_index: int) -> List[OTLObject]:
+        Searches in the "PostenMapping dictionary" for the "PostenMapping key"
+        that matches with the "BestekPost nummer"
+
+        Parameters
+        ----------
+        base_asset : OTLObject
+            The base asset, from which a "BestekPost nummer" is derived.
+
+        Returns
+        -------
+        str
+            The valid "PostenMapping key"
+        """
+        bestek_post_nummer = base_asset.bestekPostNummer
+
+        if not bestek_post_nummer:
+            raise MissingMappingKeyError("bestekPostNummer is missing or empty in the base asset")
+
+        valid_keys = {
+            candidate_key
+            for candidate_key in bestek_post_nummer
+            if candidate_key in self.mapping_dict
+        }
+
+        number_valid_keys = len(valid_keys)
+        if number_valid_keys == 0:
+            raise InvalidMappingKeyError(
+                "bestekPostNummer(s) not found in posten mapping dictionary"
+            )
+        elif number_valid_keys > 1:
+            raise MultipleMappingKeysError("Multiple values found for bestekPostNummer; expected one.")
+        return list(valid_keys)[0]
+
+
+    def create_assets_from_mapping(self, base_asset: OTLObject, unique_index: int) -> List[OTLObject]:
+        mapping_key = self.get_valid_mapping_key_from_base_asset(base_asset)
+
         mapping = copy.deepcopy(self.mapping_dict[mapping_key])
         copy_base_asset = dynamic_create_instance_from_uri(base_asset.typeURI)
         copy_base_asset.assetId.identificator = base_asset.assetId.identificator
