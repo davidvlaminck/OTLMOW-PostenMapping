@@ -79,7 +79,7 @@ class PostAssetFactory:
         return list(valid_keys)[0]
 
     def create_assets_from_mapping(self, base_asset: OTLObject, unique_index: int,
-                                   keep_original_attributes: bool = True) -> List[OTLObject]:
+                                   keep_original_attributes: bool = True, model_directory: Path = None) -> List[OTLObject]:
         """Create assets from a mapping template
 
         Creates OTLObjects (assets, relations) from a base_asset and the mapping template
@@ -102,7 +102,7 @@ class PostAssetFactory:
 
         mapping = copy.deepcopy(self.mapping_dict[mapping_key])
 
-        copy_base_asset = dynamic_create_instance_from_uri(base_asset.typeURI)
+        copy_base_asset = dynamic_create_instance_from_uri(base_asset.typeURI, model_directory=model_directory)
         copy_base_asset.assetId.identificator = base_asset.assetId.identificator
         copy_base_asset.assetId.toegekendDoor = base_asset.assetId.toegekendDoor
         copy_base_asset.bestekPostNummer = base_asset.bestekPostNummer
@@ -177,12 +177,12 @@ class PostAssetFactory:
 
         return created_assets
 
-    def create_assets_from_post(self, post: str) -> List[OTLObject]:
+    def create_assets_from_post(self, post: str, model_directory: Path = None) -> List[OTLObject]:
         mapping = self.mapping_dict[post]
         created_assets = []
         for asset_to_create in mapping.keys():
             type_uri = mapping[asset_to_create]['typeURI']
-            asset = dynamic_create_instance_from_uri(class_uri=type_uri)
+            asset = dynamic_create_instance_from_uri(class_uri=type_uri, model_directory=model_directory)
             created_assets.append(asset)
 
             for attr in mapping[asset_to_create]['attributen'].values():

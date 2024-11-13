@@ -11,6 +11,8 @@ from otlmow_model.OtlmowModel.BaseClasses.FloatOrDecimalField import FloatOrDeci
 from otlmow_model.OtlmowModel.BaseClasses.OTLField import OTLField
 
 from UnitTests.PostenMappingDict import PostenMappingDict
+from UnitTests.TestModel.OtlmowModel.Classes.Onderdeel.AllCasesTestClass import AllCasesTestClass
+from UnitTests.TestModelMappingDict import PostenMappingDict as TestModelPostenMappingDict
 from otlmow_postenmapping.Exceptions.InvalidMappingKeyError import InvalidMappingKeyError
 from otlmow_postenmapping.Exceptions.MultipleMappingKeysError import MultipleMappingKeysError
 from otlmow_postenmapping.Exceptions.MissingMappingKeyError import MissingMappingKeyError
@@ -226,6 +228,24 @@ def test_create_assets_from_post_1001_30704(subtests):
 
     with subtests.test(msg='correct value for float/decimal'):
         assert steun.diameter.waarde == 114.0
+
+
+def test_create_assets_using_testclass():
+    model_directory_path = Path(__file__).parent / 'TestModel'
+    factory = PostAssetFactory()
+    factory.mapping_dict =  TestModelPostenMappingDict.mapping_dict
+    test_class_base = AllCasesTestClass()
+    test_class_base.bestekPostNummer = ['testclass_1']
+
+    created_assets = factory.create_assets_from_mapping(test_class_base, unique_index=0,
+                                                        model_directory=model_directory_path)
+
+    testclass = next((a for a in created_assets if a.typeURI ==
+                      'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass'), None)
+
+    assert testclass is not None
+
+    assert testclass.testBooleanField == True
 
 
 def test_create_assets_from_post_1001_10171(subtests):
