@@ -8,7 +8,7 @@ from typing import List, Dict
 from otlmow_converter.DotnotationHelper import DotnotationHelper
 from otlmow_model.OtlmowModel.BaseClasses.FloatOrDecimalField import FloatOrDecimalField
 from otlmow_model.OtlmowModel.BaseClasses.KeuzelijstField import KeuzelijstField
-from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLObject, dynamic_create_instance_from_uri
+from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLObject, dynamic_create_instance_from_uri, create_dict_from_asset, set_value_by_dictitem
 
 from otlmow_postenmapping.Exceptions.InvalidMappingKeyError import InvalidMappingKeyError
 from otlmow_postenmapping.Exceptions.MultipleMappingKeysError import MultipleMappingKeysError
@@ -20,7 +20,8 @@ from otlmow_postenmapping.SQLDbReader import SQLDbReader
 class PostAssetFactory:
     mapping_dict = None
 
-    def __init__(self, mapping_artefact_path: Path = None, directory: Path = None, mapping_name: str = 'PostenMapping') -> None:
+    def __init__(self, mapping_artefact_path: Path = None, directory: Path = None,
+                 mapping_name: str = 'PostenMapping') -> None:
         self.mapping_dict = None
         if mapping_artefact_path is not None:
             if not os.path.isfile(mapping_artefact_path):
@@ -77,22 +78,53 @@ class PostAssetFactory:
             raise MultipleMappingKeysError("Multiple values found for bestekPostNummer; expected one.")
         return list(valid_keys)[0]
 
+    def create_assets_from_mapping(self, base_asset: OTLObject, unique_index: int,
+                                   keep_original_attributes: bool = True) -> List[OTLObject]:
+        """Create assets from a mapping template
 
-    def create_assets_from_mapping(self, base_asset: OTLObject, unique_index: int) -> List[OTLObject]:
+        Creates OTLObjects (assets, relations) from a base_asset and the mapping template
+
+        Parameters
+        ----------
+        base_asset : OTLObject
+            The base asset
+        unique_index : int
+            unique index
+        keep_original_attributes: bool
+            Keep the original attributes, and do not overwrite them by the attributes from the Postmapping template
+
+        Returns
+        -------
+        List[OTLObject]
+            A list of OTLObjects, the base assets, and its related assets and relations
+        """
         mapping_key = self.get_valid_mapping_key_from_base_asset(base_asset)
 
         mapping = copy.deepcopy(self.mapping_dict[mapping_key])
+
         copy_base_asset = dynamic_create_instance_from_uri(base_asset.typeURI)
         copy_base_asset.assetId.identificator = base_asset.assetId.identificator
         copy_base_asset.assetId.toegekendDoor = base_asset.assetId.toegekendDoor
         copy_base_asset.bestekPostNummer = base_asset.bestekPostNummer
+
+        if keep_original_attributes:
+            # Add the original attributes from the base_asset, except from assetId, bestekPostNummer, typeURI
+            base_asset_dict = create_dict_from_asset(base_asset)
+
+            base_asset_filtered_dict = {key: value for key, value in base_asset_dict.items() if key not in {'assetId', 'bestekPostNummer', 'typeURI'}}
+
+            for attribute_name, attribute_value in base_asset_filtered_dict.items():
+                set_value_by_dictitem(copy_base_asset, attribute_name, attribute_value)
+
         copy_base_asset.bestekPostNummer.remove(mapping_key)
+
         base_asset_toestand = base_asset.toestand
         created_assets = [copy_base_asset]
 
         # change the local id of the base asset to the real id in the mapping
         # and change relation id's accordingly
-        base_local_id = next(local_id for local_id, asset_mapping in mapping.items() if asset_mapping['isHoofdAsset'])
+        base_local_id = next(
+            (local_id for local_id, asset_mapping in mapping.items() if asset_mapping.get('isHoofdAsset')), None)
         for local_id, asset_mapping in mapping.items():
             if local_id == base_local_id:
                 continue
@@ -113,6 +145,7 @@ class PostAssetFactory:
                         f"{asset_mapping['attributen']['doelAssetId.identificator']['value']}_{unique_index}"
 
         for asset_to_create in mapping.keys():
+            # Create the asset(s) from the mapping
             if asset_to_create != base_local_id:
                 type_uri = mapping[asset_to_create]['typeURI']
                 asset = dynamic_create_instance_from_uri(class_uri=type_uri)
@@ -123,6 +156,7 @@ class PostAssetFactory:
             else:
                 asset = copy_base_asset
 
+            # Create attribute(s) for the asset
             for attr in mapping[asset_to_create]['attributen'].values():
                 if attr['dotnotation'] == 'typeURI':
                     continue

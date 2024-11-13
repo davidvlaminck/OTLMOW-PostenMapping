@@ -2,11 +2,19 @@ from pathlib import Path
 
 import pytest
 from otlmow_model.OtlmowModel.Classes.Onderdeel.Camera import Camera
+from otlmow_model.OtlmowModel.Classes.Onderdeel.RetroreflecterendeFolie import RetroreflecterendeFolie
+from otlmow_model.OtlmowModel.Classes.Onderdeel.RetroreflecterendVerkeersbord import RetroreflecterendVerkeersbord
+from otlmow_model.OtlmowModel.Classes.Onderdeel.WVLichtmast import WVLichtmast
+from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
+from otlmow_model.OtlmowModel.Helpers.OTLObjectHelper import is_relation
+from otlmow_model.OtlmowModel.BaseClasses.FloatOrDecimalField import FloatOrDecimalField
+from otlmow_model.OtlmowModel.BaseClasses.OTLField import OTLField
 
 from UnitTests.PostenMappingDict import PostenMappingDict
 from otlmow_postenmapping.Exceptions.InvalidMappingKeyError import InvalidMappingKeyError
 from otlmow_postenmapping.Exceptions.MultipleMappingKeysError import MultipleMappingKeysError
 from otlmow_postenmapping.Exceptions.MissingMappingKeyError import MissingMappingKeyError
+
 from otlmow_postenmapping.PostAssetFactory import PostAssetFactory
 
 
@@ -264,3 +272,68 @@ def test_split_range_str(subtests):
     with subtests.test(msg='0.5 < x <= 1'):
         expected_list = [('gt', 0.5), ('ste', 1)]
         assert PostAssetFactory._split_numeric_range_str('0.5 < x <= 1') == expected_list
+
+
+def test_create_asset_from_mapping_happy_flow(subtests):
+    this_directory = Path(__file__).parent
+    factory = PostAssetFactory(this_directory / 'PostenMapping_template_202411.db', directory=this_directory, mapping_name='PostenMapping_template_202411')
+    my_wvlichtmast = WVLichtmast()
+    my_wvlichtmast.fill_with_dummy_data()
+    my_wvlichtmast.naam = 'myDummyNaam'
+    my_wvlichtmast.bestekPostNummer = ['WVlichtmast_config1']
+
+    my_list_OTLObjects = factory.create_assets_from_mapping(my_wvlichtmast, unique_index=1)
+    my_list_OTLAssets = [OTLObject for OTLObject in my_list_OTLObjects if not is_relation(OTLObject)]
+    my_list_OTLRelations = [OTLObject for OTLObject in my_list_OTLObjects if is_relation(OTLObject)]
+
+    with subtests.test(msg='Function returns a list'):
+        # Gegeven een nieuwe asset, worden de juiste assets gegenereerd met de postenMapping + relaties + subassets.
+        assert isinstance(my_list_OTLObjects, list)
+
+    with (((((subtests.test(msg='List elements are OTL Assets or OTL Relations')))))):
+        assert (all(my_otlasset.is_instance_of(OTLAsset) for my_otlasset in my_list_OTLAssets),
+                "Not all elements are instances of OTLAssets")
+        assert (all(is_relation(my_otlrelation) for my_otlrelation in my_list_OTLRelations),
+                "Not all elements are instances of OTLRelation")
+        # number fo the OTLObjects is perfectly split in Assets and Relations
+        assert (len(my_list_OTLObjects) == len(my_list_OTLAssets) + len(my_list_OTLRelations),
+                "The number of created OTLObjects equals the number of OTLAssets and OTLRelations")
+
+    with subtests.test(msg='All the OTL Assets have at least one value for attribute "toestand"'):
+        # if toestand is missing (None), the length of the set is zero (0).
+        # if toestand has a value, the length of the set should be 1 (all values identical)
+        # or more than 1 (all the values are different)
+        assert (len({ my_otlasset.toestand for my_otlasset in my_list_OTLAssets}) > 0)
+
+@pytest.fixture
+def factory_postenmapping_template_202411() -> PostAssetFactory():
+    this_directory = Path(__file__).parent
+    return PostAssetFactory(
+        this_directory / 'PostenMapping_template_202411.db',
+        directory=this_directory,
+        mapping_name='PostenMapping_template_202411'
+    )
+
+@pytest.fixture
+def base_asset_WVLichtmast() -> OTLAsset:
+    asset = WVLichtmast()
+    asset.fill_with_dummy_data()
+    asset.naam = 'myDummyNaam'
+    asset.bestekPostNummer = ['WVlichtmast_config1']
+    return asset
+
+@pytest.mark.parametrize("keep_original_attributes, expected_naam", [
+    (True, 'myDummyNaam'),   # Expect the original name to be retained
+    (False, None)            # Expect the name to be overwritten (set to None)
+])
+def test_create_asset_from_mapping_keep_or_overwrite_attributes(factory_postenmapping_template_202411, base_asset_WVLichtmast, keep_original_attributes, expected_naam, subtests):
+    my_list_OTLObjects = factory_postenmapping_template_202411.create_assets_from_mapping(
+        base_asset=base_asset_WVLichtmast,
+        unique_index=1,
+        keep_original_attributes=keep_original_attributes
+    )
+    my_list_OTLAssets = [obj for obj in my_list_OTLObjects if obj.is_instance_of(OTLAsset)]
+    base_asset_from_list = my_list_OTLAssets[0]  # First asset in the list is the base asset
+
+    with subtests.test(msg=f'Attribute "naam" is {"preserved" if keep_original_attributes else "overwritten"}'):
+        assert base_asset_from_list.naam == expected_naam
