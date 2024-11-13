@@ -283,7 +283,7 @@ def test_create_asset_from_mapping_happy_flow(subtests):
     my_wvlichtmast.bestekPostNummer = ['WVlichtmast_config1']
 
     my_list_OTLObjects = factory.create_assets_from_mapping(my_wvlichtmast, unique_index=1)
-    my_list_OTLAssets = [OTLObject for OTLObject in my_list_OTLObjects if OTLObject.is_instance_of(OTLAsset)]
+    my_list_OTLAssets = [OTLObject for OTLObject in my_list_OTLObjects if not is_relation(OTLObject)]
     my_list_OTLRelations = [OTLObject for OTLObject in my_list_OTLObjects if is_relation(OTLObject)]
 
     with subtests.test(msg='Function returns a list'):
