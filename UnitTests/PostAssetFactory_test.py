@@ -290,32 +290,20 @@ def test_create_asset_from_mapping_happy_flow(subtests):
         # Gegeven een nieuwe asset, worden de juiste assets gegenereerd met de postenMapping + relaties + subassets.
         assert isinstance(my_list_OTLObjects, list)
 
-    with (subtests.test(msg='List elements are OTL Assets or OTL Relations')):
-        assert all(my_otlasset.is_instance_of(OTLAsset) for my_otlasset in my_list_OTLAssets), ("Not all elements are "
-                                                                                                "instances of "
-                                                                                                "OTLAssets")
-        assert all(is_relation(my_otlrelation) for my_otlrelation in my_list_OTLRelations), ("Not all elements are "
-                                                                                                    "instances of "
-                                                                                             "OTLRelation")
+    with (((((subtests.test(msg='List elements are OTL Assets or OTL Relations')))))):
+        assert (all(my_otlasset.is_instance_of(OTLAsset) for my_otlasset in my_list_OTLAssets),
+                "Not all elements are instances of OTLAssets")
+        assert (all(is_relation(my_otlrelation) for my_otlrelation in my_list_OTLRelations),
+                "Not all elements are instances of OTLRelation")
         # number fo the OTLObjects is perfectly split in Assets and Relations
-        assert len(my_list_OTLObjects) == len(my_list_OTLAssets)+len(my_list_OTLRelations), ("The number of created "
-                                                                                             "OTLObjects equals the "
-                                                                                             "number of OTLAssets and "
-                                                                                             "OTLRelations")
+        assert (len(my_list_OTLObjects) == len(my_list_OTLAssets) + len(my_list_OTLRelations),
+                "The number of created OTLObjects equals the number of OTLAssets and OTLRelations")
 
     with subtests.test(msg='All the OTL Assets have at least one value for attribute "toestand"'):
         # if toestand is missing (None), the length of the set is zero (0).
         # if toestand has a value, the length of the set should be 1 (all values identical)
         # or more than 1 (all the values are different)
-        assert (
-                len(
-                    {
-                        my_otlasset.toestand
-                        for my_otlasset in my_list_OTLAssets
-                    }
-                )
-                >= 1
-        )
+        assert (len({ my_otlasset.toestand for my_otlasset in my_list_OTLAssets}) > 0)
 
 @pytest.fixture
 def factory_postenmapping_template_202411() -> PostAssetFactory():
