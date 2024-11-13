@@ -5,7 +5,6 @@ from otlmow_model.OtlmowModel.Classes.Onderdeel.Camera import Camera
 from otlmow_model.OtlmowModel.Classes.Onderdeel.RetroreflecterendeFolie import RetroreflecterendeFolie
 from otlmow_model.OtlmowModel.Classes.Onderdeel.RetroreflecterendVerkeersbord import RetroreflecterendVerkeersbord
 from otlmow_model.OtlmowModel.Classes.Onderdeel.WVLichtmast import WVLichtmast
-from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLObject
 from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
 from otlmow_model.OtlmowModel.Helpers.OTLObjectHelper import is_relation
 from otlmow_model.OtlmowModel.BaseClasses.FloatOrDecimalField import FloatOrDecimalField
@@ -285,17 +284,25 @@ def test_create_asset_from_mapping_happy_flow(subtests):
 
     my_list_OTLObjects = factory.create_assets_from_mapping(my_wvlichtmast, unique_index=1)
     my_list_OTLAssets = [OTLObject for OTLObject in my_list_OTLObjects if OTLObject.is_instance_of(OTLAsset)]
-
-    ## TODO: include in a test
-    ## my_list_OTLRelations = [OTLObject for OTLObject in my_list_OTLObjects if is_relation(OTLObject)]
+    my_list_OTLRelations = [OTLObject for OTLObject in my_list_OTLObjects if is_relation(OTLObject)]
 
     with subtests.test(msg='Function returns a list'):
         # Gegeven een nieuwe asset, worden de juiste assets gegenereerd met de postenMapping + relaties + subassets.
         assert isinstance(my_list_OTLObjects, list)
 
-    with subtests.test(msg='List elements are OTL objects'):
-        assert all(my_otlobject.is_instance_of(OTLObject) for my_otlobject in my_list_OTLObjects), ("Not all elements are "
-                                                                                                    "instances of OTLObject")
+    with (subtests.test(msg='List elements are OTL Assets or OTL Relations')):
+        assert all(my_otlasset.is_instance_of(OTLAsset) for my_otlasset in my_list_OTLAssets), ("Not all elements are "
+                                                                                                "instances of "
+                                                                                                "OTLAssets")
+        assert all(is_relation(my_otlrelation) for my_otlrelation in my_list_OTLRelations), ("Not all elements are "
+                                                                                                    "instances of "
+                                                                                             "OTLRelation")
+        # number fo the OTLObjects is perfectly split in Assets and Relations
+        assert len(my_list_OTLObjects) == len(my_list_OTLAssets)+len(my_list_OTLRelations), ("The number of created "
+                                                                                             "OTLObjects equals the "
+                                                                                             "number of OTLAssets and "
+                                                                                             "OTLRelations")
+
     with subtests.test(msg='All the OTL Assets have at least one value for attribute "toestand"'):
         # if toestand is missing (None), the length of the set is zero (0).
         # if toestand has a value, the length of the set should be 1 (all values identical)
