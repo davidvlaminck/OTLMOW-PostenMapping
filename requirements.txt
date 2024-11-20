@@ -9,6 +9,7 @@ lxml>=4.9.2
 openpyxl>=3.1.2
 otlmow-converter>=1.2
 otlmow-model>=2.12.4.0
+otlmow-template>=0.4
 packaging>=23.0
 pluggy>=1.0.0
 prettytable>=3.6.0
