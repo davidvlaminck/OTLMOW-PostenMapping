@@ -1,3 +1,5 @@
+import datetime
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -233,7 +235,8 @@ def test_create_assets_from_post_1001_30704(subtests):
 def test_create_assets_using_testclass():
     model_directory_path = Path(__file__).parent / 'TestModel'
     factory = PostAssetFactory()
-    factory.mapping_dict =  TestModelPostenMappingDict.mapping_dict
+    factory.mapping_dict = TestModelPostenMappingDict.mapping_dict
+
     test_class_base = AllCasesTestClass()
     test_class_base.bestekPostNummer = ['testclass_1']
 
@@ -245,8 +248,22 @@ def test_create_assets_using_testclass():
 
     assert testclass is not None
 
+    # Simple datatypes (eenvoudige datatypes)
     assert testclass.testBooleanField == True
-
+    assert testclass.testIntegerField == 9
+    assert testclass.testStringField == 'myDummyString'
+    assert testclass.testDateField == date(2000, 1, 1)
+    assert testclass.testDateTimeField == datetime.datetime(year=2000, month=1, day=1, hour=1, minute=1, second=1)
+    assert testclass.testKwantWrd.waarde == 1.1
+    assert testclass.testKeuzelijst == 'waarde-1'
+    # assert testclass.testIntegerFieldMetKard[0] == 1  # Deze test faalt
+    # assert testclass.testStringFieldMetKard[0] == 'myDummyString1'  # Deze test faalt
+    # Complex datatypes (complexe datatypes)
+    assert testclass.testComplexType.testBooleanField == True
+    assert testclass.testComplexType.testStringField == 'myDummyString'
+    # Union datatypes (union datatypes)
+    assert testclass.testUnionType.unionString == 'myDummyString'
+    assert testclass.testUnionType.unionKwantWrd.waarde == 1.1
 
 def test_create_assets_from_post_1001_10171(subtests):
     factory = set_up_factory_with_unittest_mapping()
