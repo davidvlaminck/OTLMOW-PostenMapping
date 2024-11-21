@@ -21,6 +21,7 @@ requires-python = ">=3.9"
 dependencies = [
   'otlmow_converter >= 1.2',
     'sqlalchemy >= 2.0.35',
+    'otlmow_template >= 0.4'
 ]
 
 [tool.setuptools.packages.find]
