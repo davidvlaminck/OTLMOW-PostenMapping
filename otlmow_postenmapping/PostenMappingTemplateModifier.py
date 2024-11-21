@@ -3,14 +3,9 @@ import shutil
 from pathlib import Path
 from typing import List
 from openpyxl.reader.excel import load_workbook
-from openpyxl.styles import PatternFill
-from openpyxl.utils import get_column_letter
-from openpyxl.worksheet.datavalidation import DataValidation
-from openpyxl.worksheet.dimensions import DimensionHolder, ColumnDimension
 
 from otlmow_template.SubsetTemplateCreator import SubsetTemplateCreator
 
-from UnitTests.TestModel.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
 from UnitTests.TestModel.OtlmowModel.BaseClasses.OTLObject import dynamic_create_instance_from_uri
 
 
@@ -116,11 +111,8 @@ def create_dummy_assets(asset_list: List) -> List:
 
     Given a list of OTLAssets as input, creates a List of OTLAssets, filled with dummy data.
     The output list contains one dummy record for each asset type
-
     """
-    # Ophalen unique keys. Lijst > dictionarys > key: typeURI
     typeURI_set = {asset_dict.typeURI for asset_dict in asset_list}
-    # Loop over de lijst en creeer voor iedere typeURI een OTLAsset en vul dat OTLASset met dummy data (welke functie?)
     dummy_assets = []
     for typeURI in typeURI_set:
         instance = dynamic_create_instance_from_uri(typeURI)
