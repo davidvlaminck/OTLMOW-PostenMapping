@@ -67,24 +67,24 @@ class PostenMappingDict:
                     "range": None,
                     "union_type_criterium": None
                 }
-                # ,
-                # "testIntegerFieldMetKard": {
-                #     "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testIntegerFieldMetKard",
-                #     "dotnotation": "testIntegerFieldMetKard",
-                #     "type": "",
-                #     "value": "1|2",  ## Dit is de juiste syntax
-                #     "range": None,
-                #     "union_type_criterium": None
-                # }
-                # ,
-                # "testStringFieldMetKard": {
-                #     "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testStringFieldMetKard",
-                #     "dotnotation": "testStringFieldMetKard",
-                #     "type": "",
-                #     "value": "myDummyString1|myDummyString2",
-                #     "range": None,
-                #     "union_type_criterium": None
-                # }
+                ,
+                "testIntegerFieldMetKard": {
+                    "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testIntegerFieldMetKard",
+                    "dotnotation": "testIntegerFieldMetKard[]",
+                    "type": "",
+                    "value": "1|2",
+                    "range": None,
+                    "union_type_criterium": None
+                }
+                ,
+                "testStringFieldMetKard": {
+                    "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testStringFieldMetKard",
+                    "dotnotation": "testStringFieldMetKard[]",
+                    "type": "",
+                    "value": "myDummyString1|myDummyString2",
+                    "range": None,
+                    "union_type_criterium": None
+                }
                 ,
                 "testComplexType.testStringField": {
                     "typeURI": "",

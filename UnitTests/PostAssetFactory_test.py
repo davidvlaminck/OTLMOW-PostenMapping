@@ -256,8 +256,8 @@ def test_create_assets_using_testclass():
     assert testclass.testDateTimeField == datetime.datetime(year=2000, month=1, day=1, hour=1, minute=1, second=1)
     assert testclass.testKwantWrd.waarde == 1.1
     assert testclass.testKeuzelijst == 'waarde-1'
-    # assert testclass.testIntegerFieldMetKard[0] == 1  # Deze test faalt
-    # assert testclass.testStringFieldMetKard[0] == 'myDummyString1'  # Deze test faalt
+    assert testclass.testIntegerFieldMetKard[0] == 1  # Deze test faalt
+    assert testclass.testStringFieldMetKard[0] == 'myDummyString1'  # Deze test faalt
     # Complex datatypes (complexe datatypes)
     assert testclass.testComplexType.testBooleanField == True
     assert testclass.testComplexType.testStringField == 'myDummyString'
