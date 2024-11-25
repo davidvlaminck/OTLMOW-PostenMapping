@@ -1,3 +1,5 @@
+import datetime
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -11,6 +13,8 @@ from otlmow_model.OtlmowModel.BaseClasses.FloatOrDecimalField import FloatOrDeci
 from otlmow_model.OtlmowModel.BaseClasses.OTLField import OTLField
 
 from UnitTests.PostenMappingDict import PostenMappingDict
+from UnitTests.TestModel.OtlmowModel.Classes.Onderdeel.AllCasesTestClass import AllCasesTestClass
+from UnitTests.TestModelMappingDict import PostenMappingDict as TestModelPostenMappingDict
 from otlmow_postenmapping.Exceptions.InvalidMappingKeyError import InvalidMappingKeyError
 from otlmow_postenmapping.Exceptions.MultipleMappingKeysError import MultipleMappingKeysError
 from otlmow_postenmapping.Exceptions.MissingMappingKeyError import MissingMappingKeyError
@@ -227,6 +231,39 @@ def test_create_assets_from_post_1001_30704(subtests):
     with subtests.test(msg='correct value for float/decimal'):
         assert steun.diameter.waarde == 114.0
 
+
+def test_create_assets_using_testclass():
+    model_directory_path = Path(__file__).parent / 'TestModel'
+    factory = PostAssetFactory()
+    factory.mapping_dict = TestModelPostenMappingDict.mapping_dict
+
+    test_class_base = AllCasesTestClass()
+    test_class_base.bestekPostNummer = ['testclass_1']
+
+    created_assets = factory.create_assets_from_mapping(test_class_base, unique_index=0,
+                                                        model_directory=model_directory_path)
+
+    testclass = next((a for a in created_assets if a.typeURI ==
+                      'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass'), None)
+
+    assert testclass is not None
+
+    # Simple datatypes (eenvoudige datatypes)
+    assert testclass.testBooleanField == True
+    assert testclass.testIntegerField == 9
+    assert testclass.testStringField == 'myDummyString'
+    assert testclass.testDateField == date(2000, 1, 1)
+    assert testclass.testDateTimeField == datetime.datetime(year=2000, month=1, day=1, hour=1, minute=1, second=1)
+    assert testclass.testKwantWrd.waarde == 1.1
+    assert testclass.testKeuzelijst == 'waarde-1'
+    assert testclass.testIntegerFieldMetKard[0] == 1
+    assert testclass.testStringFieldMetKard[0] == 'myDummyString1'
+    # Complex datatypes (complexe datatypes)
+    assert testclass.testComplexType.testBooleanField == True
+    assert testclass.testComplexType.testStringField == 'myDummyString'
+    # Union datatypes (union datatypes)
+    assert testclass.testUnionType.unionString == 'myDummyString'
+    assert testclass.testUnionType.unionKwantWrd.waarde == 1.1
 
 def test_create_assets_from_post_1001_10171(subtests):
     factory = set_up_factory_with_unittest_mapping()
