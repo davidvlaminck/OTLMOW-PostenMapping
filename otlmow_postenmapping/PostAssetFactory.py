@@ -3,9 +3,10 @@ import importlib
 import json
 import os
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, Iterable
 
 from otlmow_converter.DotnotationHelper import DotnotationHelper
+from otlmow_converter.OtlmowConverter import OtlmowConverter
 from otlmow_model.OtlmowModel.BaseClasses.FloatOrDecimalField import FloatOrDecimalField
 from otlmow_model.OtlmowModel.BaseClasses.KeuzelijstField import KeuzelijstField
 from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLObject, dynamic_create_instance_from_uri, create_dict_from_asset, set_value_by_dictitem
@@ -13,6 +14,8 @@ from otlmow_model.OtlmowModel.BaseClasses.OTLObject import OTLObject, dynamic_cr
 from otlmow_postenmapping.Exceptions.InvalidMappingKeyError import InvalidMappingKeyError
 from otlmow_postenmapping.Exceptions.MultipleMappingKeysError import MultipleMappingKeysError
 from otlmow_postenmapping.Exceptions.MissingMappingKeyError import MissingMappingKeyError
+from otlmow_postenmapping.PostenMappingTemplateModifier import PostenMappingTemplateModifier, create_dummy_assets
+
 
 from otlmow_postenmapping.SQLDbReader import SQLDbReader
 
@@ -77,6 +80,41 @@ class PostAssetFactory:
         elif number_valid_keys > 1:
             raise MultipleMappingKeysError("Multiple values found for bestekPostNummer; expected one.")
         return list(valid_keys)[0]
+
+    def create_assets_from_mapping_and_write_to_file(self, start_assets: Iterable[OTLObject], output_directory: Path, output_file_name='output'):
+        """Create assets from a mapping template (step 1) and write the assets to a file (step 2)
+
+        Call the appropriate functions:
+        - PostAssetFactory.create_assets_from_mapping
+        - PostAssetFactory.create_dummy_assets
+        - OtlmowConverter().from_objects_to_file()
+        - PostenMappingTemplateModifier.alter_excel_template
+        """
+        # currently, only export to Excel format is supported
+        output_path = output_directory / f'{output_file_name}.xlsx'
+        print(f'Output path: {output_path}')
+
+        template_created_assets = []
+        for i, asset in enumerate(start_assets):
+            template_created_assets.extend(
+                self.create_assets_from_mapping(
+                    asset
+                    , unique_index=i, keep_original_attributes=True
+                )
+            )
+
+        dummy_assets = create_dummy_assets(template_created_assets)
+        template_created_assets.extend(dummy_assets)
+
+        OtlmowConverter().from_objects_to_file(sequence_of_objects=template_created_assets,
+                                               file_path=output_path,
+                                               abbreviate_excel_sheettitles=True)
+
+        PostenMappingTemplateModifier.alter_excel_template(
+            path_to_template_file_and_extension=output_path
+            , instantiated_assets=template_created_assets
+            , delete_dummy_records=True
+        )
 
     def create_assets_from_mapping(self, base_asset: OTLObject, unique_index: int,
                                    keep_original_attributes: bool = True, model_directory: Path = None) -> List[OTLObject]:
