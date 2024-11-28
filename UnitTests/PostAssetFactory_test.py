@@ -1,6 +1,8 @@
 import datetime
+import os.path
 from datetime import date
 from pathlib import Path
+from openpyxl import load_workbook
 
 import pytest
 from otlmow_model.OtlmowModel.Classes.Onderdeel.Camera import Camera
@@ -11,6 +13,8 @@ from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
 from otlmow_model.OtlmowModel.Helpers.OTLObjectHelper import is_relation
 from otlmow_model.OtlmowModel.BaseClasses.FloatOrDecimalField import FloatOrDecimalField
 from otlmow_model.OtlmowModel.BaseClasses.OTLField import OTLField
+
+from otlmow_converter.OtlmowConverter import OtlmowConverter
 
 from UnitTests.PostenMappingDict import PostenMappingDict
 from UnitTests.TestModel.OtlmowModel.Classes.Onderdeel.AllCasesTestClass import AllCasesTestClass
@@ -374,3 +378,46 @@ def test_create_asset_from_mapping_keep_or_overwrite_attributes(factory_postenma
 
     with subtests.test(msg=f'Attribute "naam" is {"preserved" if keep_original_attributes else "overwritten"}'):
         assert base_asset_from_list.naam == expected_naam
+
+
+def test_create_assets_from_mapping_and_write_to_file():
+    # arrange
+    this_directory = Path(__file__).parent
+    file_path = this_directory / 'output.xlsx'
+    model_directory_path = Path(__file__).parent / 'TestModel'
+    factory = PostAssetFactory()
+    factory.mapping_dict = TestModelPostenMappingDict.mapping_dict
+
+    instance = AllCasesTestClass()
+    instance.bestekPostNummer = ['testclass_keep_attributes']
+    start_assets = [instance]
+
+    # act
+    # TODO output_directory en output_file_name samenvoegen
+    factory.create_assets_from_mapping_and_write_to_file(
+        start_assets=start_assets,
+        output_path=file_path,
+        # output_directory=this_directory,
+        # output_file_name='outputTest',
+        keep_original_attributes=True,
+        append_all_attributes=True,
+        model_directory=model_directory_path
+    )
+
+    # TODO Opnieuw via de Converter inlezen
+    # assert
+    assert os.path.exists(file_path)
+
+    # Temporary delete the Sheet "Keuzelijsten"
+    wb = load_workbook(file_path)
+    wb.remove_sheet(wb['Keuzelijsten'])
+    wb.save(file_path)
+
+    instance_generated = list(OtlmowConverter.from_file_to_objects(file_path, model_directory=model_directory_path))[0]
+    # assert: number of attributes >= initial attributes
+    # TODO tot hier
+    # Haal alle waarden op, alsook alle waardes van de instance en vergelijk het aantal attributen op, meer specifiek het aantal ingevulde attributen. Het moeten er altijd evenveel of meer zijn.
+    # assert instance_generated
+    # assert: attributes are not overwritten
+    assert instance_generated.testIntegerField == 9
+    assert instance_generated.testStringField == 'myDummyString'
