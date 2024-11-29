@@ -11,7 +11,6 @@ if __name__ == '__main__':
 
     start_assets = OtlmowConverter().from_file_to_objects(file_path=this_directory / 'start_bestand.xlsx')
 
-    # TODO 2 parameters output_directory en output_file_name samenvoegen naar 1 parameter output_path
     f.create_assets_from_mapping_and_write_to_file(start_assets=start_assets,
                                                    output_path=this_directory / 'output.xlsx',
                                                    keep_original_attributes=True,
