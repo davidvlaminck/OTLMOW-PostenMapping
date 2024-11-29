@@ -164,24 +164,15 @@ class PostAssetFactory:
 
         mapping = copy.deepcopy(self.mapping_dict[mapping_key])
 
+        base_asset_toestand = base_asset.toestand
+
+        created_assets = []
+
         copy_base_asset = dynamic_create_instance_from_uri(base_asset.typeURI, model_directory=model_directory)
         copy_base_asset.assetId.identificator = base_asset.assetId.identificator
         copy_base_asset.assetId.toegekendDoor = base_asset.assetId.toegekendDoor
         copy_base_asset.bestekPostNummer = base_asset.bestekPostNummer
-
-        if keep_original_attributes:
-            # Add the original attributes from the base_asset, except from assetId, bestekPostNummer, typeURI
-            base_asset_dict = create_dict_from_asset(base_asset)
-
-            base_asset_filtered_dict = {key: value for key, value in base_asset_dict.items() if key not in {'assetId', 'bestekPostNummer', 'typeURI'}}
-
-            for attribute_name, attribute_value in base_asset_filtered_dict.items():
-                set_value_by_dictitem(copy_base_asset, attribute_name, attribute_value)
-
         copy_base_asset.bestekPostNummer.remove(mapping_key)
-
-        base_asset_toestand = base_asset.toestand
-        created_assets = [copy_base_asset]
 
         # change the local id of the base asset to the real id in the mapping
         # and change relation id's accordingly
@@ -207,35 +198,45 @@ class PostAssetFactory:
                         f"{asset_mapping['attributen']['doelAssetId.identificator']['value']}_{unique_index}"
 
         for asset_to_create in mapping.keys():
-            # Create the asset(s) from the mapping
-            if asset_to_create != base_local_id:
+            # step1. create the asset(s) from the mapping
+            if asset_to_create == base_local_id:
+                # base asset
+                asset = copy_base_asset
+            else:
+                # child-asset(s) or relations
                 type_uri = mapping[asset_to_create]['typeURI']
                 asset = dynamic_create_instance_from_uri(class_uri=type_uri)
                 asset.assetId.identificator = f'{asset_to_create}_{unique_index}'
-                created_assets.append(asset)
                 if hasattr(asset, 'toestand'):
                     asset.toestand = base_asset_toestand
+
+            # step2. create the attributes for each asset, based on the mapping dictionary
+            # if base asset and parameter keep_original_attributes is set True,
+            # copy the attributes from the input parameter base_asset
+            # in all other cases: apply the mapping of attributes
+            if asset_to_create == base_local_id and keep_original_attributes:
+                # Add the original attributes from the base_asset, except from assetId, bestekPostNummer, typeURI
+                base_asset_dict = create_dict_from_asset(base_asset)
+
+                base_asset_filtered_dict = {key: value for key, value in base_asset_dict.items() if
+                                            key not in {'assetId', 'bestekPostNummer', 'typeURI'}}
+
+                for attribute_name, attribute_value in base_asset_filtered_dict.items():
+                    set_value_by_dictitem(asset, attribute_name, attribute_value)
+
             else:
-                asset = copy_base_asset
+                for attr in mapping[asset_to_create]['attributen'].values():
+                    if attr['dotnotation'] == 'typeURI':
+                        continue
+                    if attr['value'] is not None:
+                        value = attr['value']
+                        if attr['type'] == 'http://www.w3.org/2001/XMLSchema#decimal':
+                            value = float(attr['value'])
 
-            # Create attribute(s) for the asset
-            for attr in mapping[asset_to_create]['attributen'].values():
-                if attr['dotnotation'] == 'typeURI':
-                    continue
-                if attr['value'] is not None:
-                    value = attr['value']
-                    if attr['type'] == 'http://www.w3.org/2001/XMLSchema#decimal':
-                        value = float(attr['value'])
+                        DotnotationHelper.set_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'], value=value)
 
-                    if asset == copy_base_asset:
-                        asset_attr = DotnotationHelper.get_attribute_by_dotnotation(
-                            base_asset, dotnotation=attr['dotnotation'], waarde_shortcut=True)
-                        if isinstance(asset_attr, list):
-                            asset_attr = asset_attr[0]
-                        if asset_attr.waarde is not None:
-                            continue
-
-                    DotnotationHelper.set_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'], value=value)
+            # Append all assets to the list. This includes the base asset, as well as the child-assets and relations.
+            created_assets.append(asset)
 
         return created_assets
 
