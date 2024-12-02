@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "otlmow_postenmapping"
-version = "0.2"
+version = "0.3"
 authors = [{name = "David Vlaminck", email = "david.vlaminck@mow.vlaanderen.be"}]
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -19,9 +19,9 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-  'otlmow_converter >= 1.2',
+    'otlmow_converter >= 1.5',
     'sqlalchemy >= 2.0.35',
-    'otlmow_template >= 0.4'
+    'otlmow_template >= 0.5'
 ]
 
 [tool.setuptools.packages.find]
