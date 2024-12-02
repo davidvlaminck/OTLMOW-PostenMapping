@@ -414,7 +414,7 @@ def test_create_assets_from_mapping_and_write_to_file_keep_original_attributes(s
 
     # Temporary delete the Sheet "Keuzelijsten"
     wb = load_workbook(file_path)
-    wb.remove_sheet(wb['Keuzelijsten'])
+    wb.remove(wb['Keuzelijsten'])
     wb.save(file_path)
 
     instance_generated = list(OtlmowConverter.from_file_to_objects(file_path, model_directory=model_directory_path))[0]
