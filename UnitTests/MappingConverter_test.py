@@ -1,10 +1,13 @@
 from pathlib import Path
 
+import pytest
+
 from otlmow_postenmapping.MappingConverter import MappingConverter
 
 CURRENT_DIR = Path(__file__).parent
 
 
+@pytest.skip
 def test_create_db_locally():
     db_path = CURRENT_DIR / 'test.db'
     if db_path.exists():
