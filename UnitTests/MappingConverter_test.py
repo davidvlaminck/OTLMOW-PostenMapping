@@ -7,7 +7,7 @@ from otlmow_postenmapping.MappingConverter import MappingConverter
 CURRENT_DIR = Path(__file__).parent
 
 
-@pytest.skip
+@pytest.mark.skip(reason="Crashed on SQLAlchemy, removing this module is in the pipeline.")
 def test_create_db_locally():
     db_path = CURRENT_DIR / 'test.db'
     if db_path.exists():
