@@ -164,8 +164,6 @@ class PostAssetFactory:
 
         mapping = copy.deepcopy(self.mapping_dict[mapping_key])
 
-        base_asset_toestand = base_asset.toestand
-
         created_assets = []
 
         copy_base_asset = dynamic_create_instance_from_uri(base_asset.typeURI, model_directory=model_directory)
@@ -208,7 +206,7 @@ class PostAssetFactory:
                 asset = dynamic_create_instance_from_uri(class_uri=type_uri)
                 asset.assetId.identificator = f'{asset_to_create}_{unique_index}'
                 if hasattr(asset, 'toestand'):
-                    asset.toestand = base_asset_toestand
+                    asset.toestand = base_asset.toestand
 
             # step2. create the attributes for each asset, based on the mapping dictionary
             # if base asset and parameter keep_original_attributes is set True,
