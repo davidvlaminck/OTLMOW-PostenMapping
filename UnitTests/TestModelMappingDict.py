@@ -124,5 +124,30 @@ class PostenMappingDict:
             },
             "isHoofdAsset": True
         }
+    },
+    "testclass_keep_attributes": {
+        "testclass2": {
+            "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass",
+            "attributen": {
+                "testIntegerField": {
+                    "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testIntegerField",
+                    "dotnotation": "testIntegerField",
+                    "type": "",
+                    "value": "9",
+                    "range": None,
+                    "union_type_criterium": None
+                }
+                ,
+                "testStringField": {
+                    "typeURI": "https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass.testStringField",
+                    "dotnotation": "testStringField",
+                    "type": "",
+                    "value": "myDummyString",
+                    "range": None,
+                    "union_type_criterium": None
+                }
+            },
+            "isHoofdAsset": True
+        }
     }
 }

@@ -7,7 +7,7 @@ from openpyxl.reader.excel import load_workbook
 from otlmow_template.SubsetTemplateCreator import SubsetTemplateCreator
 
 from UnitTests.TestModel.OtlmowModel.BaseClasses.OTLObject import dynamic_create_instance_from_uri
-
+from otlmow_converter.DotnotationHelper import DotnotationHelper
 
 class PostenMappingTemplateModifier(SubsetTemplateCreator):
     def __init__(self):
@@ -15,7 +15,7 @@ class PostenMappingTemplateModifier(SubsetTemplateCreator):
 
     @classmethod
     def alter_excel_template(cls
-                             , path_to_template_file_and_extension: Path
+                             , output_path: Path
                              , instantiated_assets: List
                              , path_to_subset=None
                              , **kwargs
@@ -25,7 +25,7 @@ class PostenMappingTemplateModifier(SubsetTemplateCreator):
         Alters the Excel template. Overrides the existing function and additionally removes any dummy records in Sheets.
 
         Args:
-            path_to_template_file_and_extension (Path): Excel output file that is edited
+            output_path (Path): Excel output file that is edited
             instantiated_assets (list): List of OTLAssets
             path_to_subset (Path): Path to the Sqlite subset. Default None
         """
@@ -37,13 +37,13 @@ class PostenMappingTemplateModifier(SubsetTemplateCreator):
         delete_dummy_records = kwargs.get('delete_dummy_records', False)
 
         # Create a temporary output folder if not exists
-        tempdir = Path(path_to_template_file_and_extension).parent / 'tmpOutput'
+        tempdir = Path(output_path).parent / 'tmpOutput'
         if not tempdir.exists():
             os.makedirs(tempdir)
         temporary_path = tempdir / 'output.xlsx'
 
         # Copy the output file to the temporary directory
-        shutil.copyfile(path_to_template_file_and_extension, temporary_path)
+        shutil.copyfile(output_path, temporary_path)
 
         wb = load_workbook(temporary_path)
         wb.create_sheet('Keuzelijsten')
@@ -61,7 +61,7 @@ class PostenMappingTemplateModifier(SubsetTemplateCreator):
         if add_attribute_info:
             cls.add_attribute_info_excel(workbook=wb, instantiated_attributes=instantiated_assets)
         cls.design_workbook_excel(workbook=wb)
-        wb.save(path_to_template_file_and_extension)
+        wb.save(output_path)
         # Remove all files from the temporary location
         file_location = os.path.dirname(temporary_path)
         [f.unlink() for f in Path(file_location).glob("*") if f.is_file()]
@@ -119,5 +119,6 @@ def create_dummy_assets(asset_list: List) -> List:
         if instance is None:
             continue
         instance.fill_with_dummy_data()
+        DotnotationHelper.clear_list_of_list_attributes(instance)
         dummy_assets.append(instance)
     return dummy_assets

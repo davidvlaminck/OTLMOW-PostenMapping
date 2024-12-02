@@ -1,6 +1,8 @@
 import datetime
+import os.path
 from datetime import date
 from pathlib import Path
+from openpyxl import load_workbook
 
 import pytest
 from otlmow_model.OtlmowModel.Classes.Onderdeel.Camera import Camera
@@ -11,6 +13,8 @@ from otlmow_model.OtlmowModel.BaseClasses.OTLAsset import OTLAsset
 from otlmow_model.OtlmowModel.Helpers.OTLObjectHelper import is_relation
 from otlmow_model.OtlmowModel.BaseClasses.FloatOrDecimalField import FloatOrDecimalField
 from otlmow_model.OtlmowModel.BaseClasses.OTLField import OTLField
+
+from otlmow_converter.OtlmowConverter import OtlmowConverter
 
 from UnitTests.PostenMappingDict import PostenMappingDict
 from UnitTests.TestModel.OtlmowModel.Classes.Onderdeel.AllCasesTestClass import AllCasesTestClass
@@ -241,7 +245,8 @@ def test_create_assets_using_testclass():
     test_class_base.bestekPostNummer = ['testclass_1']
 
     created_assets = factory.create_assets_from_mapping(test_class_base, unique_index=0,
-                                                        model_directory=model_directory_path)
+                                                        model_directory=model_directory_path,
+                                                        keep_original_attributes=False)
 
     testclass = next((a for a in created_assets if a.typeURI ==
                       'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass'), None)
@@ -327,7 +332,7 @@ def test_create_asset_from_mapping_happy_flow(subtests):
         # Gegeven een nieuwe asset, worden de juiste assets gegenereerd met de postenMapping + relaties + subassets.
         assert isinstance(my_list_OTLObjects, list)
 
-    with (((((subtests.test(msg='List elements are OTL Assets or OTL Relations')))))):
+    with subtests.test(msg='List elements are OTL Assets or OTL Relations'):
         assert (all(my_otlasset.is_instance_of(OTLAsset) for my_otlasset in my_list_OTLAssets),
                 "Not all elements are instances of OTLAssets")
         assert (all(is_relation(my_otlrelation) for my_otlrelation in my_list_OTLRelations),
@@ -374,3 +379,115 @@ def test_create_asset_from_mapping_keep_or_overwrite_attributes(factory_postenma
 
     with subtests.test(msg=f'Attribute "naam" is {"preserved" if keep_original_attributes else "overwritten"}'):
         assert base_asset_from_list.naam == expected_naam
+
+
+@pytest.mark.parametrize(
+    "keep_original_attributes",
+    [[True], [False]]
+)
+def test_create_assets_from_mapping_and_write_to_file_keep_original_attributes(subtests, keep_original_attributes):
+    # arrange
+    this_directory = Path(__file__).parent
+    file_path = this_directory / 'output.xlsx'
+    model_directory_path = Path(__file__).parent / 'TestModel'
+    factory = PostAssetFactory()
+    factory.mapping_dict = TestModelPostenMappingDict.mapping_dict
+
+    instance = AllCasesTestClass()
+    instance.bestekPostNummer = ['testclass_keep_attributes']
+    instance.testIntegerField = -9
+    instance.testStringField = 'myDummyInitialString'
+    start_assets = [instance]
+
+    # act
+    factory.create_assets_from_mapping_and_write_to_file(
+        start_assets=start_assets,
+        output_path=file_path,
+        keep_original_attributes=keep_original_attributes,
+        append_all_attributes=True,
+        model_directory=model_directory_path
+    )
+
+    # assert
+    with subtests.test(msg=f'Output file exists: {file_path}'):
+        assert os.path.exists(file_path)
+
+    # Temporary delete the Sheet "Keuzelijsten"
+    wb = load_workbook(file_path)
+    wb.remove(wb['Keuzelijsten'])
+    wb.save(file_path)
+
+    instance_generated = list(OtlmowConverter.from_file_to_objects(file_path, model_directory=model_directory_path))[0]
+
+    # remove attributes 'bestekPostNummer' from both instances
+    instance_dict = instance.create_dict_from_asset()
+    instance_dict.pop('bestekPostNummer', None)
+    instance_generated_dict = instance_generated.create_dict_from_asset()
+    instance_generated_dict.pop('bestekPostNummer', None)
+
+    # Add specific assertions based on expected behavior
+    if keep_original_attributes:
+        with subtests.test(msg=f'test parameter: keep_original_attributes={keep_original_attributes}'):
+            assert instance_generated.testIntegerField == -9
+            assert instance_generated.testStringField == 'myDummyInitialString'
+    else:
+        with subtests.test(msg=f'test parameter: keep_original_attributes={keep_original_attributes}'):
+            assert instance_generated.testIntegerField == 9
+            assert instance_generated.testStringField == 'myDummyString'
+
+@pytest.mark.parametrize(
+    "append_all_attributes",
+    [[True], [False]]
+)
+def test_create_assets_from_mapping_and_write_to_file(subtests, append_all_attributes):
+    # arrange
+    this_directory = Path(__file__).parent
+    file_path = this_directory / 'output.xlsx'
+    model_directory_path = Path(__file__).parent / 'TestModel'
+    factory = PostAssetFactory()
+    factory.mapping_dict = TestModelPostenMappingDict.mapping_dict
+
+    instance = AllCasesTestClass()
+    instance.bestekPostNummer = ['testclass_keep_attributes']
+    instance.testIntegerField = -9
+    instance.testStringField = 'myDummyInitialString'
+    start_assets = [instance]
+
+    # act
+    factory.create_assets_from_mapping_and_write_to_file(
+        start_assets=start_assets,
+        output_path=file_path,
+        keep_original_attributes=False,
+        append_all_attributes=append_all_attributes,
+        model_directory=model_directory_path
+    )
+
+    # assert
+    with subtests.test(msg=f'Output file exists: {file_path}'):
+        assert os.path.exists(file_path)
+
+    # Temporary delete the Sheet "Keuzelijsten"
+    wb = load_workbook(file_path)
+    wb.remove(wb['Keuzelijsten'])
+    wb.save(file_path)
+
+    instance_generated = list(OtlmowConverter.from_file_to_objects(file_path, model_directory=model_directory_path))[0]
+
+    # remove attributes 'bestekPostNummer' from both instances
+    instance_dict = instance.create_dict_from_asset()
+    instance_dict.pop('bestekPostNummer', None)
+    instance_generated_dict = instance_generated.create_dict_from_asset()
+    instance_generated_dict.pop('bestekPostNummer', None)
+
+    # Add specific assertions based on expected behavior
+    wb = load_workbook(file_path)
+    nbr_columns_excel = wb['ond#AllCasesTestClass'].max_column
+    if append_all_attributes:
+        # Open Excel sheet and count the number of (empty) columns.
+        # This should be >= the number of attributes
+        with subtests.test(msg=f'test parameter: append_all_attributes={append_all_attributes}'):
+            assert nbr_columns_excel >= len(instance_dict)
+    else:
+        with subtests.test(msg=f'test parameter: append_all_attributes={append_all_attributes}'):
+            assert nbr_columns_excel == len(instance_dict)
+
