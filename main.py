@@ -4,15 +4,14 @@ from otlmow_postenmapping.PostAssetFactory import PostAssetFactory
 
 if __name__ == '__main__':
     this_directory = Path(__file__).parent
-    f = PostAssetFactory(this_directory / 'templates-Mapping_Artefact-versie kris 0.1.db',
-                         directory=this_directory,
-                         mapping_name='templates_mapping_artefact_krisVDS'
+    f = PostAssetFactory(this_directory / 'templates-Mapping_Artefact-20241127.db',
+                         directory=this_directory
                          )
 
-    start_assets = OtlmowConverter().from_file_to_objects(file_path=this_directory / 'start_bestand.xlsx')
+    start_assets = OtlmowConverter().from_file_to_objects(file_path=this_directory / 'demo_bim4infra' / 'basisimport.xlsx')
 
     f.create_assets_from_mapping_and_write_to_file(start_assets=start_assets,
                                                    output_path=this_directory / 'output.xlsx',
-                                                   keep_original_attributes=True,
-                                                   append_all_attributes=True
+                                                   overwrite_original_attributes_by_template=False,
+                                                   append_all_attributes=False
                                                    )
