@@ -6,7 +6,7 @@ from openpyxl.reader.excel import load_workbook
 
 from otlmow_template.SubsetTemplateCreator import SubsetTemplateCreator
 
-from UnitTests.TestModel.OtlmowModel.BaseClasses.OTLObject import dynamic_create_instance_from_uri
+from otlmow_model.OtlmowModel.BaseClasses.OTLObject import dynamic_create_instance_from_uri
 from otlmow_converter.DotnotationHelper import DotnotationHelper
 
 class PostenMappingTemplateModifier(SubsetTemplateCreator):
