@@ -245,8 +245,8 @@ def test_create_assets_using_testclass():
     test_class_base.bestekPostNummer = ['testclass_1']
 
     created_assets = factory.create_assets_from_mapping(test_class_base, unique_index=0,
-                                                        model_directory=model_directory_path,
-                                                        keep_original_attributes=False)
+                                                        overwrite_original_attributes_by_template=True,
+                                                        model_directory=model_directory_path)
 
     testclass = next((a for a in created_assets if a.typeURI ==
                       'https://wegenenverkeer.data.vlaanderen.be/ns/onderdeel#AllCasesTestClass'), None)
@@ -364,28 +364,26 @@ def base_asset_WVLichtmast() -> OTLAsset:
     asset.bestekPostNummer = ['WVlichtmast_config1']
     return asset
 
-@pytest.mark.parametrize("keep_original_attributes, expected_naam", [
-    (True, 'myDummyNaam'),   # Expect the original name to be retained
-    (False, None)            # Expect the name to be overwritten (set to None)
+@pytest.mark.parametrize("overwrite_original_attributes_by_template, expected_naam", [
+    (True, None),   # Expect the original name to be retained
+    (False, 'myDummyNaam')            # Expect the name to be overwritten (set to None)
 ])
-def test_create_asset_from_mapping_keep_or_overwrite_attributes(factory_postenmapping_template_202411, base_asset_WVLichtmast, keep_original_attributes, expected_naam, subtests):
+def test_create_asset_from_mapping_keep_or_overwrite_attributes(factory_postenmapping_template_202411, base_asset_WVLichtmast, overwrite_original_attributes_by_template, expected_naam, subtests):
     my_list_OTLObjects = factory_postenmapping_template_202411.create_assets_from_mapping(
-        base_asset=base_asset_WVLichtmast,
-        unique_index=1,
-        keep_original_attributes=keep_original_attributes
-    )
+        base_asset=base_asset_WVLichtmast, unique_index=1,
+        overwrite_original_attributes_by_template=overwrite_original_attributes_by_template)
     my_list_OTLAssets = [obj for obj in my_list_OTLObjects if obj.is_instance_of(OTLAsset)]
     base_asset_from_list = my_list_OTLAssets[0]  # First asset in the list is the base asset
 
-    with subtests.test(msg=f'Attribute "naam" is {"preserved" if keep_original_attributes else "overwritten"}'):
+    with subtests.test(msg=f'Attribute "naam" is {"overwritten" if overwrite_original_attributes_by_template else "preserved"}'):
         assert base_asset_from_list.naam == expected_naam
 
 
 @pytest.mark.parametrize(
-    "keep_original_attributes",
+    "overwrite_original_attributes_by_template",
     [[True], [False]]
 )
-def test_create_assets_from_mapping_and_write_to_file_keep_original_attributes(subtests, keep_original_attributes):
+def test_create_assets_from_mapping_and_write_to_file_overwrite_original_attributes(subtests, overwrite_original_attributes_by_template):
     # arrange
     this_directory = Path(__file__).parent
     file_path = this_directory / 'output.xlsx'
@@ -403,7 +401,7 @@ def test_create_assets_from_mapping_and_write_to_file_keep_original_attributes(s
     factory.create_assets_from_mapping_and_write_to_file(
         start_assets=start_assets,
         output_path=file_path,
-        keep_original_attributes=keep_original_attributes,
+        overwrite_original_attributes_by_template=overwrite_original_attributes_by_template,
         append_all_attributes=True,
         model_directory=model_directory_path
     )
@@ -426,20 +424,21 @@ def test_create_assets_from_mapping_and_write_to_file_keep_original_attributes(s
     instance_generated_dict.pop('bestekPostNummer', None)
 
     # Add specific assertions based on expected behavior
-    if keep_original_attributes:
-        with subtests.test(msg=f'test parameter: keep_original_attributes={keep_original_attributes}'):
-            assert instance_generated.testIntegerField == -9
-            assert instance_generated.testStringField == 'myDummyInitialString'
-    else:
-        with subtests.test(msg=f'test parameter: keep_original_attributes={keep_original_attributes}'):
+    if overwrite_original_attributes_by_template:
+        with subtests.test(msg=f'test parameter: overwrite_original_attributes_by_template={overwrite_original_attributes_by_template}'):
             assert instance_generated.testIntegerField == 9
             assert instance_generated.testStringField == 'myDummyString'
+    else:
+        with subtests.test(msg=f'test parameter: overwrite_original_attributes_by_template={overwrite_original_attributes_by_template}'):
+            assert instance_generated.testIntegerField == -9
+            assert instance_generated.testStringField == 'myDummyInitialString'
+
 
 @pytest.mark.parametrize(
     "append_all_attributes",
     [[True], [False]]
 )
-def test_create_assets_from_mapping_and_write_to_file(subtests, append_all_attributes):
+def test_create_assets_from_mapping_and_write_to_file_append_all_attributes(subtests, append_all_attributes):
     # arrange
     this_directory = Path(__file__).parent
     file_path = this_directory / 'output.xlsx'
@@ -457,7 +456,7 @@ def test_create_assets_from_mapping_and_write_to_file(subtests, append_all_attri
     factory.create_assets_from_mapping_and_write_to_file(
         start_assets=start_assets,
         output_path=file_path,
-        keep_original_attributes=False,
+        overwrite_original_attributes_by_template=True,
         append_all_attributes=append_all_attributes,
         model_directory=model_directory_path
     )
