@@ -83,7 +83,7 @@ class PostAssetFactory:
 
     def create_assets_from_mapping_and_write_to_file(self, start_assets: Iterable[OTLObject],
                                                      output_path: Path,
-                                                     keep_original_attributes: bool = True,
+                                                     overwrite_original_attributes_by_template: bool = True,
                                                      append_all_attributes: bool = True,
                                                      model_directory: Path = None):
         """Create assets from a mapping template (step 1) and write the assets to an Excel file (step 2)
@@ -100,8 +100,8 @@ class PostAssetFactory:
             List of OTL Objects
         output_path : Path
             Output path of the generated file. (actually only Excel is supported)
-        keep_original_attributes: bool
-            Keep the original attributes, and do not overwrite them by the attributes from the Postmapping template
+        overwrite_original_attributes_by_template: bool
+            Overwrite the original attributes by the template
         append_all_attributes: bool
             Append all the attributes who are part of an asset. These are all the possible attributes of the asset.
         model_directory: Path
@@ -121,7 +121,7 @@ class PostAssetFactory:
                 self.create_assets_from_mapping(
                     asset,
                     unique_index=i,
-                    keep_original_attributes=keep_original_attributes,
+                    overwrite_original_attributes_by_template=overwrite_original_attributes_by_template,
                     model_directory=model_directory
                 )
             )
@@ -137,11 +137,14 @@ class PostAssetFactory:
         PostenMappingTemplateModifier.alter_excel_template(
             output_path=output_path,
             instantiated_assets=template_created_assets,
-            delete_dummy_records=True
+            delete_dummy_records=True,
+            add_geo_artefact=True
         )
 
     def create_assets_from_mapping(self, base_asset: OTLObject, unique_index: int,
-                                   keep_original_attributes: bool = True, model_directory: Path = None) -> List[OTLObject]:
+                                   overwrite_original_attributes_by_template: bool = True,
+                                   model_directory: Path = None
+                                   ) -> List[OTLObject]:
         """Create assets from a mapping template
 
         Creates OTLObjects (assets, relations) from a base_asset and the mapping template
@@ -152,8 +155,10 @@ class PostAssetFactory:
             The base asset
         unique_index : int
             unique index
-        keep_original_attributes: bool
-            Keep the original attributes, and do not overwrite them by the attributes from the Postmapping template
+        overwrite_original_attributes_by_template: bool
+            Overwrite the original attributes with the template
+        model_directory: Path
+            Model directory Path for the mapping
 
         Returns
         -------
@@ -165,12 +170,6 @@ class PostAssetFactory:
         mapping = copy.deepcopy(self.mapping_dict[mapping_key])
 
         created_assets = []
-
-        copy_base_asset = dynamic_create_instance_from_uri(base_asset.typeURI, model_directory=model_directory)
-        copy_base_asset.assetId.identificator = base_asset.assetId.identificator
-        copy_base_asset.assetId.toegekendDoor = base_asset.assetId.toegekendDoor
-        copy_base_asset.bestekPostNummer = base_asset.bestekPostNummer
-        copy_base_asset.bestekPostNummer.remove(mapping_key)
 
         # change the local id of the base asset to the real id in the mapping
         # and change relation id's accordingly
@@ -195,45 +194,50 @@ class PostAssetFactory:
                     asset_mapping['attributen']['doelAssetId.identificator']['value'] = \
                         f"{asset_mapping['attributen']['doelAssetId.identificator']['value']}_{unique_index}"
 
-        for asset_to_create in mapping.keys():
-            # step1. create the asset(s) from the mapping
-            if asset_to_create == base_local_id:
-                # base asset
-                asset = copy_base_asset
-            else:
-                # child-asset(s) or relations
-                type_uri = mapping[asset_to_create]['typeURI']
-                asset = dynamic_create_instance_from_uri(class_uri=type_uri)
-                asset.assetId.identificator = f'{asset_to_create}_{unique_index}'
-                if hasattr(asset, 'toestand'):
-                    asset.toestand = base_asset.toestand
 
-            # step2. create the attributes for each asset, based on the mapping dictionary
-            # if base asset and parameter keep_original_attributes is set True,
-            # copy the attributes from the input parameter base_asset
-            # in all other cases: apply the mapping of attributes
-            if asset_to_create == base_local_id and keep_original_attributes:
+        # Loop over all the assets-to-be-created in the mapping.
+        # These are base-assets, child-assets and relations
+        for asset_to_create in mapping.keys():
+            # Step 1. Dynamic create instance from uri
+            # To assign the identificator.
+            # if base_asset: copy the identificator of the base asset (assetId.identificator).
+            # else: concatenate the asset and append a unique index.
+            type_uri = mapping[asset_to_create]['typeURI']
+            asset = dynamic_create_instance_from_uri(class_uri=type_uri, model_directory=model_directory)
+            if asset_to_create == base_local_id:
+                asset.assetId.identificator = base_asset.assetId.identificator
+            else:
+                asset.assetId.identificator = f'{asset_to_create}_{unique_index}'
+            if hasattr(asset, 'toestand'):
+                asset.toestand = base_asset.toestand
+
+
+            # Step 2. Apply the mapping, based on the mapping dictionary
+            for attr in mapping[asset_to_create]['attributen'].values():
+                if attr['dotnotation'] == 'typeURI':
+                    continue
+                if attr['value'] is not None:
+                    value = attr['value']
+                    if attr['type'] == 'http://www.w3.org/2001/XMLSchema#decimal':
+                        value = float(attr['value'])
+
+                    DotnotationHelper.set_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'], value=value)
+
+            # Step 3.
+            # overwrite_original_attributes_by_template = True: pass, do nothing
+            # overwrite_original_attributes_by_template = False: restore the original attribute values
+            if asset_to_create == base_local_id and not overwrite_original_attributes_by_template:
                 # Add the original attributes from the base_asset, except from assetId, bestekPostNummer, typeURI
                 base_asset_dict = create_dict_from_asset(base_asset)
-
                 base_asset_filtered_dict = {key: value for key, value in base_asset_dict.items() if
-                                            key not in {'assetId', 'bestekPostNummer', 'typeURI'}}
+                                            key not in {'typeURI'}}
 
                 for attribute_name, attribute_value in base_asset_filtered_dict.items():
-                    set_value_by_dictitem(asset, attribute_name, attribute_value)
+                    # if the attribute value is empty, keep the mapping
+                    # if the attribute value is not empty, restore the original attribute value.
+                    if attribute_value: # not NULL or empty string
+                        set_value_by_dictitem(asset, attribute_name, attribute_value)
 
-            else:
-                for attr in mapping[asset_to_create]['attributen'].values():
-                    if attr['dotnotation'] == 'typeURI':
-                        continue
-                    if attr['value'] is not None:
-                        value = attr['value']
-                        if attr['type'] == 'http://www.w3.org/2001/XMLSchema#decimal':
-                            value = float(attr['value'])
-
-                        DotnotationHelper.set_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'], value=value)
-
-            # Append all assets to the list. This includes the base asset, as well as the child-assets and relations.
             created_assets.append(asset)
 
         return created_assets
