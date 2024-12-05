@@ -3,6 +3,7 @@ import shutil
 from pathlib import Path
 from typing import List
 from openpyxl.reader.excel import load_workbook
+from openpyxl.workbook import Workbook
 
 from otlmow_template.SubsetTemplateCreator import SubsetTemplateCreator
 
@@ -33,7 +34,6 @@ class PostenMappingTemplateModifier(SubsetTemplateCreator):
         add_geo_artefact = kwargs.get('add_geo_artefact', False)
         add_attribute_info = kwargs.get('add_attribute_info', False)
         highlight_deprecated_attributes = kwargs.get('highlight_deprecated_attributes', False)
-        amount_of_examples = kwargs.get('amount_of_examples', 0)
         delete_dummy_records = kwargs.get('delete_dummy_records', False)
 
         # Create a temporary output folder if not exists
@@ -70,7 +70,7 @@ class PostenMappingTemplateModifier(SubsetTemplateCreator):
         os.rmdir(tempdir)
 
     @classmethod
-    def delete_dummy_record(cls, workbook) -> None:
+    def delete_dummy_record(cls, workbook: Workbook) -> None:
         """Delete the dummy records in a Workbook
 
         Given an Excel Workbook, delete in every sheet all dummy records.
