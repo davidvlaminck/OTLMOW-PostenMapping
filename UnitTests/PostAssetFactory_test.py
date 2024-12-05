@@ -365,7 +365,7 @@ def base_asset_WVLichtmast() -> OTLAsset:
     return asset
 
 @pytest.mark.parametrize("overwrite_original_attributes_by_template, expected_naam", [
-    (True, None),   # Expect the original name to be retained
+    (True, None),   # Expect the original name to be overwritten (set to None)
     (False, 'myDummyNaam')            # Expect the name to be overwritten (set to None)
 ])
 def test_create_asset_from_mapping_keep_or_overwrite_attributes(factory_postenmapping_template_202411, base_asset_WVLichtmast, overwrite_original_attributes_by_template, expected_naam, subtests):
