@@ -83,7 +83,7 @@ class PostAssetFactory:
 
     def create_assets_from_mapping_and_write_to_file(self, start_assets: Iterable[OTLObject],
                                                      output_path: Path,
-                                                     overwrite_original_attributes_by_template: bool = True,
+                                                     overwrite_original_attributes_by_mapping: bool = True,
                                                      append_all_attributes: bool = True,
                                                      model_directory: Path = None):
         """Create assets from a mapping template (step 1) and write the assets to an Excel file (step 2)
@@ -100,8 +100,8 @@ class PostAssetFactory:
             List of OTL Objects
         output_path : Path
             Output path of the generated file. (actually only Excel is supported)
-        overwrite_original_attributes_by_template: bool
-            Overwrite the original attributes by the template
+        overwrite_original_attributes_by_mapping: bool
+            Overwrite the original attributes by the mapping
         append_all_attributes: bool
             Append all the attributes who are part of an asset. These are all the possible attributes of the asset.
         model_directory: Path
@@ -121,7 +121,7 @@ class PostAssetFactory:
                 self.create_assets_from_mapping(
                     asset,
                     unique_index=i,
-                    overwrite_original_attributes_by_template=overwrite_original_attributes_by_template,
+                    overwrite_original_attributes_by_mapping=overwrite_original_attributes_by_mapping,
                     model_directory=model_directory
                 )
             )
@@ -142,7 +142,7 @@ class PostAssetFactory:
         )
 
     def create_assets_from_mapping(self, base_asset: OTLObject, unique_index: int,
-                                   overwrite_original_attributes_by_template: bool = True,
+                                   overwrite_original_attributes_by_mapping: bool = True,
                                    model_directory: Path = None
                                    ) -> List[OTLObject]:
         """Create assets from a mapping template
@@ -155,8 +155,8 @@ class PostAssetFactory:
             The base asset
         unique_index : int
             unique index
-        overwrite_original_attributes_by_template: bool
-            Overwrite the original attributes with the template
+        overwrite_original_attributes_by_mapping: bool
+            Overwrite the original attributes with the mapping
         model_directory: Path
             Model directory Path for the mapping
 
@@ -224,9 +224,9 @@ class PostAssetFactory:
                     DotnotationHelper.set_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'], value=value)
 
             # Step 3.
-            # overwrite_original_attributes_by_template = True: pass, do nothing
-            # overwrite_original_attributes_by_template = False: restore the original attribute values
-            if asset_to_create == base_local_id and not overwrite_original_attributes_by_template:
+            # overwrite_original_attributes_by_mapping = True: pass, do nothing
+            # overwrite_original_attributes_by_mapping = False: restore the original attribute values
+            if asset_to_create == base_local_id and not overwrite_original_attributes_by_mapping:
                 # Add the original attributes from the base_asset, except from assetId, bestekPostNummer, typeURI
                 base_asset_dict = create_dict_from_asset(base_asset)
                 base_asset_filtered_dict = {key: value for key, value in base_asset_dict.items() if
