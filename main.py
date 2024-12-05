@@ -12,6 +12,6 @@ if __name__ == '__main__':
 
     f.create_assets_from_mapping_and_write_to_file(start_assets=start_assets,
                                                    output_path=this_directory / 'output.xlsx',
-                                                   overwrite_original_attributes_by_template=False,
-                                                   append_all_attributes=False
+                                                   overwrite_original_attributes_by_mapping=True,
+                                                   append_all_attributes=True
                                                    )
