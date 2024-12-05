@@ -363,23 +363,23 @@ def base_asset_WVLichtmast() -> OTLAsset:
     asset.naam = 'myDummyNaam'
     asset.bestekPostNummer = ['WVlichtmast_config1']
     asset.geometry = 'POINT Z (160000 160000 0)'
+    asset.masttype = 'BS'
     return asset
 
-@pytest.mark.parametrize("overwrite_original_attributes_by_mapping, expected_naam, expected_geometry", [
-    (True, None, None),   # Expect the original name to be overwritten (set to None)
-    (False, 'myDummyNaam', 'POINT Z (160000 160000 0)')   # Expect the original attribute "naam" and "geometry" to be retained
+@pytest.mark.parametrize("overwrite_original_attributes_by_mapping, expected_masttype, expected_geometry", [
+    (True, 'RM', 'POINT Z (160000 160000 0)'),
+    (False, 'BS', 'POINT Z (160000 160000 0)')
 ])
-def test_create_asset_from_mapping_overwrite_or_keep_attributes(factory_postenmapping_template_202411, base_asset_WVLichtmast, overwrite_original_attributes_by_mapping, expected_naam, expected_geometry, subtests):
-    my_list_OTLObjects = factory_postenmapping_template_202411.create_assets_from_mapping(
+def test_create_asset_from_mapping_overwrite_or_keep_attributes(factory_postenmapping_template_202411, base_asset_WVLichtmast, overwrite_original_attributes_by_mapping, expected_masttype, expected_geometry, subtests):
+    factory = factory_postenmapping_template_202411
+    my_list_OTLObjects = factory.create_assets_from_mapping(
         base_asset=base_asset_WVLichtmast, unique_index=1,
         overwrite_original_attributes_by_mapping=overwrite_original_attributes_by_mapping)
     my_list_OTLAssets = [obj for obj in my_list_OTLObjects if obj.is_instance_of(OTLAsset)]
     base_asset_from_list = my_list_OTLAssets[0]  # First asset in the list is the base asset
 
-    with subtests.test(msg=f'Attribute "naam" is {"overwritten" if overwrite_original_attributes_by_mapping else "preserved"}'):
-        assert base_asset_from_list.naam == expected_naam
-
-    with subtests.test(msg=f'Attribute "geometry" is {"overwritten" if overwrite_original_attributes_by_mapping else "preserved"}'):
+    with subtests.test(msg=f'overwrite_original_attributes_by_mapping: {overwrite_original_attributes_by_mapping}.'):
+        assert base_asset_from_list.masttype == expected_masttype
         assert base_asset_from_list.geometry == expected_geometry
 
 @pytest.mark.parametrize(
