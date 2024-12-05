@@ -33,7 +33,7 @@ class PostenMappingTemplateModifier(SubsetTemplateCreator):
         generate_choice_list = kwargs.get('generate_choice_list', True)
         add_geo_artefact = kwargs.get('add_geo_artefact', False)
         add_attribute_info = kwargs.get('add_attribute_info', False)
-        highlight_deprecated_attributes = kwargs.get('highlight_deprecated_attributes', False)
+        highlight_deprecated_attributes = kwargs.get('highlight_deprecated_attributes', True)
         delete_dummy_records = kwargs.get('delete_dummy_records', False)
 
         # Create a temporary output folder if not exists

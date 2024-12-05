@@ -211,32 +211,45 @@ class PostAssetFactory:
             if hasattr(asset, 'toestand'):
                 asset.toestand = base_asset.toestand
 
-
-            # Step 2. Apply the mapping, based on the mapping dictionary
-            for attr in mapping[asset_to_create]['attributen'].values():
-                if attr['dotnotation'] == 'typeURI':
-                    continue
-                if attr['value'] is not None:
-                    value = attr['value']
-                    if attr['type'] == 'http://www.w3.org/2001/XMLSchema#decimal':
-                        value = float(attr['value'])
-
-                    DotnotationHelper.set_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'], value=value)
-
-            # Step 3.
-            # overwrite_original_attributes_by_mapping = True: pass, do nothing
-            # overwrite_original_attributes_by_mapping = False: restore the original attribute values
-            if asset_to_create == base_local_id and not overwrite_original_attributes_by_mapping:
-                # Add the original attributes from the base_asset, except from assetId, bestekPostNummer, typeURI
+            # Step 2.
+            # Restore the attributes of the base_asset
+            if asset_to_create == base_local_id:
+                # Add the original attributes from the base_asset
                 base_asset_dict = create_dict_from_asset(base_asset)
                 base_asset_filtered_dict = {key: value for key, value in base_asset_dict.items() if
                                             key not in {'typeURI'}}
 
                 for attribute_name, attribute_value in base_asset_filtered_dict.items():
-                    # if the attribute value is empty, keep the mapping
-                    # if the attribute value is not empty, restore the original attribute value.
-                    if attribute_value: # not NULL or empty string
-                        set_value_by_dictitem(asset, attribute_name, attribute_value)
+                    set_value_by_dictitem(asset, attribute_name, attribute_value)
+
+            # Step 3. Apply the mapping, based on the mapping dictionary
+            if asset_to_create == base_local_id: # base_asset
+                for attr in mapping[asset_to_create]['attributen'].values():
+                    # Is the original attribute empty? >> Apply mapping
+                    # OR
+                    # Is the parameter overwrite_original_attributes_by_mapping = True >> Apply mapping
+                    base_asset_attr = DotnotationHelper.get_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation']).waarde
+                    if base_asset_attr is None or overwrite_original_attributes_by_mapping:
+                        if attr['dotnotation'] == 'typeURI':
+                            continue
+                        if attr['value'] is not None:
+                            value = attr['value']
+                            if attr['type'] == 'http://www.w3.org/2001/XMLSchema#decimal':
+                                value = float(attr['value'])
+
+                            DotnotationHelper.set_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'],
+                                                                           value=value)
+
+            else: # not the base-asset
+                for attr in mapping[asset_to_create]['attributen'].values():
+                    if attr['dotnotation'] == 'typeURI':
+                        continue
+                    if attr['value'] is not None:
+                        value = attr['value']
+                        if attr['type'] == 'http://www.w3.org/2001/XMLSchema#decimal':
+                            value = float(attr['value'])
+
+                        DotnotationHelper.set_attribute_by_dotnotation(asset, dotnotation=attr['dotnotation'], value=value)
 
             created_assets.append(asset)
 
