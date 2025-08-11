@@ -10,3 +10,9 @@ if __name__ == '__main__':
 
     d = factory.mapping_dict
     print(len(d.keys()))
+
+    instances = factory.create_assets_from_post('0701.20205G')
+    print(instances)
+
+    instances = factory.create_assets_from_post('0705.12002')
+    print(instances)
