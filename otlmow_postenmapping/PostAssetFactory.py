@@ -127,7 +127,7 @@ class PostAssetFactory:
             )
 
         if append_all_attributes:
-            dummy_assets = create_dummy_assets(template_created_assets)
+            dummy_assets = create_dummy_assets(template_created_assets, model_directory)
             template_created_assets.extend(dummy_assets)
 
         OtlmowConverter().from_objects_to_file(sequence_of_objects=template_created_assets,

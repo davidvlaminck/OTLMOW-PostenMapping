@@ -106,7 +106,7 @@ class PostenMappingTemplateModifier(SubsetTemplateCreator):
                 sheet.delete_rows(row_idx)
 
 
-def create_dummy_assets(asset_list: List) -> List:
+def create_dummy_assets(asset_list: List, model_directory: Path = None) -> List:
     """Create a list of dummy assets
 
     Given a list of OTLAssets as input, creates a List of OTLAssets, filled with dummy data.
@@ -115,7 +115,7 @@ def create_dummy_assets(asset_list: List) -> List:
     typeURI_set = {asset_dict.typeURI for asset_dict in asset_list}
     dummy_assets = []
     for typeURI in typeURI_set:
-        instance = dynamic_create_instance_from_uri(typeURI)
+        instance = dynamic_create_instance_from_uri(typeURI, model_directory)
         if instance is None:
             continue
         instance.fill_with_dummy_data()
